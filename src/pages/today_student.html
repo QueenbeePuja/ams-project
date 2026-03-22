@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../css/output.css" />
+    <script src="https://unpkg.com/feather-icons"></script>
+    <title>Home</title>
+    <script>
+      const role = localStorage.getItem("role");
+
+      if (!role) {
+        window.location.href = "http://127.0.0.1:5500/src/pages/login.html";
+      }
+
+      if (role !== "Student") {
+        window.location.href = "http://127.0.0.1:5500/src/pages/login.html";
+      }
+    </script>
+  </head>
+
+  <body>
+    <div class="main-page flex h-screen">
+      <div id="sidebar"></div>
+
+      <div class="right-page flex flex-col flex-1">
+        <div id="navbar"></div>
+        <!-- Main body content where all the backend work will appear -->
+        <div class="main-body-content flex-1 bg-[#fefae0] p-10">
+          <div class="grid gap-6">
+            <!-- Time table -->
+            <div class="bg-white p-6 shadow rounded">
+              <h2
+                class="text-lg font-semibold text-gray-700 mb-4 tracking-wide"
+              >
+                TIME TABLE
+              </h2>
+              <div class="space-y-3 max-h-80 overflow-y-auto">
+                <div
+                  class="bg-green-500 text-white py-3 px-4 rounded-lg grid grid-cols-4 items-center hover:brightness-110 transition duration-200"
+                >
+                  <!-- LEFT -->
+                  <div class="text-sm">CS501 | 9:00–9:50 | Room 204</div>
+
+                  <!-- SUBJECT -->
+                  <div class="text-center font-semibold">Data Mining</div>
+
+                  <!-- ATTENDANCE % -->
+                  <div class="text-right font-semibold">80%</div>
+
+                  <!-- SCAN BUTTON -->
+                  <div class="text-right">
+                    <button
+                      class="scan-btn bg-white text-green-700 px-3 py-1 rounded text-sm font-semibold hover:bg-gray-100"
+                      data-course="CS501"
+                    >
+                      Scan
+                    </button>
+                  </div>
+                </div>
+
+                <div class="bg-yellow-400 p-3 rounded-lg flex justify-between">
+                  <span>CS502 | 9:50 - 10:40 | Room 302 |</span>
+                  <span>78%</span>
+                </div>
+
+                <div
+                  class="bg-red-500 text-white p-3 rounded-lg flex justify-between"
+                >
+                  <span>CS503 | 10:40 - 11:30 | Room 105</span>
+                  <span>36%</span>
+                </div>
+              </div>
+            </div>
+            <!-- bottom two sections -->
+            <div class="grid grid-cols-2 gap-6">
+              <div class="bg-white p-6 rounded-2xl shadow-md">
+                <h2 class="text-lg font-semibold text-gray-700 mb-4">
+                  Teacher Message
+                </h2>
+
+                <div class="space-y-3">
+                  <div
+                    class="p-6 bg-gray-100 rounded-lg text-center text-gray-500 text-sm"
+                  >
+                    <div class="text-lg">📭</div>
+                    <div>No new messages</div>
+                    <div class="text-xs mt-1">
+                      Check back later for updates from your instructors.
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="bg-white p-6 rounded-2xl shadow-md">
+                <h2 class="text-lg font-semibold text-gray-700 mb-4">
+                  Announcements
+                </h2>
+
+                <ul class="space-y-3 text-gray-700">
+                  <li class="flex items-start gap-2">
+                    <span>📢</span>
+                    <span>Mid semester exams start from April 5.</span>
+                  </li>
+
+                  <li class="flex items-start gap-2">
+                    <span>📢</span>
+                    <span>Assignment submission deadline March 20.</span>
+                  </li>
+
+                  <li class="flex items-start gap-2">
+                    <span>📢</span>
+                    <span>AI workshop will be conducted this Friday.</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      feather.replace();
+    </script>
+    <script src="../js/layout.js"></script>
+    <script src="/src/js/common.js"></script>
+  </body>
+</html>

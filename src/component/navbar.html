@@ -1,0 +1,27 @@
+<div
+  class="nav-bar h-16 bg-[#283618] flex items-center justify-between px-12 text-white shadow-md"
+>
+  <div
+    class="p-2 hover:bg-[#606c38] rounded cursor-pointer border-2 border-[#606c38] text-center"
+  >
+    Today
+  </div>
+
+  <div class="flex gap-6 items-center">
+    <div
+      class="relative p-2 hover:bg-[#606c38] rounded cursor-pointer border-2 border-[#606c38] flex items-center justify-center"
+    >
+      <i data-feather="bell"></i>
+      <span
+        class="absolute -top-2 -right-2 bg-red-500 text-white text-xs w-4 h-4 flex items-center justify-center rounded-full"
+        >3</span
+      >
+    </div>
+    <div
+      onclick="logout()"
+      class="p-2 hover:bg-[#606c38] rounded cursor-pointer border-2 border-[#606c38] text-center transition"
+    >
+      <i data-feather="user"></i>
+    </div>
+  </div>
+</div>

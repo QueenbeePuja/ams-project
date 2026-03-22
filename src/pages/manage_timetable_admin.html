@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../css/output.css" />
+    <script src="https://unpkg.com/feather-icons"></script>
+    <title>Timetable</title>
+  </head>
+  <body>
+    <div class="main-page flex h-screen">
+      <div id="sidebar"></div>
+
+      <div class="right-page flex flex-col flex-1 h-full">
+        <div id="navbar"></div>
+        <!-- Main body content where all the backend work will appear -->
+        <div class="main-body-content flex-1 bg-[#fefae0] p-10 overflow-y-auto">
+          <div class="grid gap-6">
+            <div class="bg-white p-6 rounded-2xl shadow-md">
+              <!-- Timetable Header -->
+              <div class="flex justify-between items-center">
+                <h2 class="text-gray-700 text-xl font-semibold">
+                  Create Timetable
+                </h2>
+
+                <select id="semester-select" class="border rounded-lg p-2">
+                  <option value="">Choose Semester</option>
+                  <option value="1">Semester 1</option>
+                  <option value="2">Semester 2</option>
+                  <option value="3">Semester 3</option>
+                  <option value="4">Semester 4</option>
+                  <option value="5">Semester 5</option>
+                  <option value="6">Semester 6</option>
+                </select>
+              </div>
+              <!--timetable's TABLE-->
+              <div class="overflow-x-auto mt-6">
+                <table
+                  class="w-full border border-gray-300 text-sm text-center border-collapse"
+                >
+                  <thead id="timetable-head"></thead>
+
+                  <tbody id="timetable-body"></tbody>
+                </table>
+              </div>
+              <div class="flex justify-end gap-3 mt-4">
+                <button
+                  id="reset-timetable"
+                  class="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600"
+                >
+                  Reset
+                </button>
+
+                <button
+                  id="save-timetable"
+                  class="px-4 py-2 bg-green-700 text-white rounded-lg hover:bg-green-800"
+                >
+                  Save Timetable
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--end of main body -->
+      </div>
+    </div>
+    <script>
+      feather.replace();
+    </script>
+    <script src="../js/layout.js"></script>
+    <script src="../js/manage_student_admin.js"></script>
+    <script src="../js/manage_timetable_admin.js"></script>
+    <script src="/src/js/common.js"></script>
+  </body>
+</html>

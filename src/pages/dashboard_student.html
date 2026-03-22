@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../css/output.css" />
+    <script src="https://unpkg.com/feather-icons"></script>
+    <title>Dashboard</title>
+    <script src="/src/js/common.js"></script>
+  </head>
+
+  <body>
+    <script>
+      checkAuth("Student");
+    </script>
+    <div class="main-page flex h-screen">
+      <div id="sidebar"></div>
+
+      <div class="right-page flex flex-col flex-1 h-full">
+        <div id="navbar"></div>
+        <!-- Main body content where all the backend work will appear -->
+        <div class="main-body-content flex-1 bg-[#fefae0] p-10 overflow-y-auto">
+          <div class="grid grid-cols-2 gap-6">
+            <!--grid 1-->
+            <div
+              class="bg-white p-6 rounded-2xl shadow-md hover:shadow-lg transition"
+            >
+              <h3 class="text-sm text-gray-500">Overall Attendance</h3>
+
+              <div
+                id="overallPercent"
+                class="text-4xl font-bold mt-2 text-[#283618]"
+              >
+                --
+              </div>
+
+              <p id="overallBuffer" class="text-sm mt-2 font-semibold">
+                Calculating...
+              </p>
+            </div>
+            <div
+              class="bg-white p-6 rounded-2xl shadow-md hover:shadow-lg transition"
+            >
+              <h3 class="text-sm text-gray-500">Classes Attended</h3>
+
+              <div class="text-4xl font-bold mt-2 text-[#283618]">84 / 102</div>
+
+              <p class="text-sm text-gray-500 mt-1">This semester</p>
+            </div>
+            <!--grid 2-->
+            <!-- SUBJECT SAFETY BUFFER -->
+            <div class="bg-white p-6 rounded-2xl shadow-md col-span-2">
+              <h2 class="text-lg font-semibold text-gray-700 mb-4">
+                Attendance Safety (Subject-wise)
+              </h2>
+
+              <div id="subjectBufferList" class="space-y-3">
+                <!-- dynamic -->
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--end of main body -->
+      </div>
+    </div>
+    <script>
+      feather.replace();
+    </script>
+    <script src="../js/layout.js"></script>
+    <script src="../js/dashboard_student.js"></script>
+  </body>
+</html>

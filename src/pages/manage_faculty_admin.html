@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../css/output.css" />
+    <script src="https://unpkg.com/feather-icons"></script>
+    <title>Dashboard</title>
+  </head>
+
+  <body>
+    <div class="main-page flex h-screen">
+      <div id="sidebar"></div>
+
+      <div class="right-page flex flex-col flex-1 h-full">
+        <div id="navbar"></div>
+        <!-- Main body content where all the backend work will appear -->
+        <div class="main-body-content flex-1 bg-[#fefae0] p-10 overflow-y-auto">
+          <div class="grid gap-6">
+            <!-- MANAGE FACULTY -->
+            <div class="bg-white p-6 rounded-2xl shadow-md">
+              <div class="flex justify-between items-center">
+                <h2 class="text-xl font-semibold text-gray-700">
+                  Manage Faculty
+                </h2>
+
+                <button
+                  onclick="toggleFacultyForm()"
+                  class="bg-[#283618] text-white px-4 py-2 rounded-lg hover:bg-[#606c38]"
+                >
+                  Add Faculty
+                </button>
+              </div>
+
+              <!-- Add Faculty Form -->
+              <div id="facultyForm" class="hidden mt-6">
+                <h3 class="text-lg font-semibold text-gray-700 mb-4">
+                  Add Faculty
+                </h3>
+
+                <div class="grid grid-cols-2 gap-4">
+                  <div>
+                    <label class="text-sm text-gray-600">Faculty Name</label>
+                    <input type="text" class="border rounded-lg p-2 w-full" />
+                  </div>
+
+                  <div>
+                    <label class="text-sm text-gray-600">Faculty ID</label>
+                    <input type="text" class="border rounded-lg p-2 w-full" />
+                  </div>
+
+                  <div>
+                    <label class="text-sm text-gray-600">Email</label>
+                    <input type="email" class="border rounded-lg p-2 w-full" />
+                  </div>
+
+                  <div>
+                    <label class="text-sm text-gray-600">Department</label>
+                    <select class="border rounded-lg p-2 w-full">
+                      <option>Computer Applications</option>
+                    </select>
+                  </div>
+                </div>
+
+                <button
+                  class="mt-4 bg-[#283618] text-white px-4 py-2 rounded-lg hover:bg-[#606c38]"
+                >
+                  Add Faculty
+                </button>
+              </div>
+            </div>
+            <!-- end of managing faculty-->
+            <!--search and filter section-->
+            <div class="bg-white p-6 rounded-2xl shadow-md">
+              <div class="flex justify-between items-center mb-4">
+                <input
+                  type="text"
+                  placeholder="Search faculty..."
+                  class="border rounded-lg p-2 w-80"
+                />
+
+                <select class="border rounded-lg p-2">
+                  <option>All Departments</option>
+                  <option>Computer Applications</option>
+                </select>
+              </div>
+            </div>
+            <!--end of search and filter-->
+            <!--faculty table-->
+            <div class="bg-white p-6 rounded-2xl shadow-md">
+              <table class="w-full text-left border-collapse">
+                <thead>
+                  <tr class="border-b text-gray-600 text-sm">
+                    <th class="py-3">Faculty ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Department</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+
+                <tbody class="text-gray-700">
+                  <tr class="border-b hover:bg-gray-50">
+                    <td class="py-3">FAC001</td>
+                    <td>Dr. Sharma</td>
+                    <td>sharma@college.edu</td>
+                    <td>Computer Applications</td>
+
+                    <td class="flex gap-3 py-3">
+                      <button class="text-blue-600 hover:underline">
+                        Edit
+                      </button>
+
+                      <button class="text-red-600 hover:underline">
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+
+                  <tr class="border-b hover:bg-gray-50">
+                    <td class="py-3">FAC002</td>
+                    <td>Dr. Mehta</td>
+                    <td>mehta@college.edu</td>
+                    <td>Computer Applications</td>
+
+                    <td class="flex gap-3 py-3">
+                      <button class="text-blue-600 hover:underline">
+                        Edit
+                      </button>
+
+                      <button class="text-red-600 hover:underline">
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <!--end of faculty table-->
+          </div>
+        </div>
+        <!--end of main body -->
+      </div>
+    </div>
+    <script>
+      feather.replace();
+    </script>
+    <script src="../js/layout.js"></script>
+    <script src="../js/manage_faculty_admin.js"></script>
+    <script src="/src/js/common.js"></script>
+  </body>
+</html>

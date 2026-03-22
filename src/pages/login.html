@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../css/output.css" />
+    <title>AMS LOGIN</title>
+  </head>
+  <body
+    class="bg-[url('../assets/books2.avif')] bg-cover flex justify-center items-center min-h-screen bg-bottom-right"
+  >
+    <div class="bg-gray-900/60 rounded-full p-15 w-160 h-95">
+      <div class="flex justify-center items-center pb-5">
+        <div class="bg-yellow-900/80 w-100 h-10 rounded-full">
+          <h3
+            class="text-center pt-1.5 py-2 font-serif text-yellow-300 text-lg"
+          >
+            Smart Attendance Management System
+          </h3>
+        </div>
+      </div>
+      <div class="flex justify-evenly pb-5">
+        <div
+          class="role-btn bg-yellow-700/70 text-blue-100 text-center justify-center font-medium w-20 h-8 rounded-full text-lg cursor-pointer transition duration-200 ease-in-out"
+        >
+          Admin
+        </div>
+        <div
+          class="role-btn bg-yellow-700/70 text-blue-100 text-center justify-center font-medium w-20 h-8 rounded-full text-lg cursor-pointer transition duration-200 ease-in-out"
+        >
+          Faculty
+        </div>
+        <div
+          class="role-btn bg-yellow-700/70 text-blue-100 text-center justify-center font-medium w-20 h-8 rounded-full text-lg cursor-pointer transition duration-200 ease-in-out"
+        >
+          Student
+        </div>
+      </div>
+      <form>
+        <input type="hidden" id="role" name="role" />
+        <div class="mb-2">
+          <label for="userid"></label>
+          <input
+            class="w-full text-2xl font-light bg-cyan-900/70 rounded-3xl px-1 py-1.5 ml-2.5 pl-7 text-blue-100"
+            type="text"
+            id="userid"
+            name="userid"
+            placeholder="User ID"
+          />
+        </div>
+        <div>
+          <label for="password"></label>
+          <input
+            class="w-full text-2xl font-light bg-cyan-900/70 rounded-3xl px-1 py-1.5 ml-2.5 pl-7 text-blue-100"
+            type="password"
+            id="password"
+            name="password"
+            placeholder="Password"
+          />
+        </div>
+        <div class="flex justify-center items-center p-3">
+          <button
+            type="submit"
+            class="bg-teal-900/70 px-20 py-1.5 rounded-2xl text-lg text-blue-200"
+          >
+            LOGIN
+          </button>
+        </div>
+      </form>
+      <a class="flex justify-center items-center text-lg text-amber-50" href="#"
+        >Forgot password</a
+      >
+    </div>
+    <script src="../js/login.js"></script>
+  </body>
+</html>

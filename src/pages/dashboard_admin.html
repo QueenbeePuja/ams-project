@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../css/output.css" />
+    <script src="https://unpkg.com/feather-icons"></script>
+    <title>Dashboard</title>
+    <script src="/src/js/common.js"></script>
+  </head>
+
+  <body>
+    <script>
+      checkAuth("Admin");
+    </script>
+    <div class="main-page flex h-screen">
+      <div id="sidebar"></div>
+
+      <div class="right-page flex flex-col flex-1 h-full">
+        <div id="navbar"></div>
+        <!-- Main body content where all the backend work will appear -->
+        <div class="main-body-content flex-1 bg-[#fefae0] p-10 overflow-y-auto">
+          <div class="grid gap-6">
+            <div class="grid grid-cols-4 gap-6">
+              <div
+                class="bg-white p-6 rounded-2xl shadow-md hover:shadow-lg transition"
+              >
+                <h3 class="text-sm text-gray-500">Total Students</h3>
+
+                <div class="text-4xl font-bold mt-2 text-[#283618]">120</div>
+
+                <p class="text-sm text-gray-500 mt-1">
+                  Computer Applications Dept
+                </p>
+              </div>
+              <div
+                class="bg-white p-6 rounded-2xl shadow-md hover:shadow-lg transition"
+              >
+                <h3 class="text-sm text-gray-500">Total Faculty</h3>
+
+                <div class="text-4xl font-bold mt-2 text-[#283618]">12</div>
+
+                <p class="text-sm text-gray-500 mt-1">Active teaching staff</p>
+              </div>
+              <div
+                class="bg-white p-6 rounded-2xl shadow-md hover:shadow-lg transition"
+              >
+                <h3 class="text-sm text-gray-500">Total Subjects</h3>
+
+                <div class="text-4xl font-bold mt-2 text-[#283618]">18</div>
+
+                <p class="text-sm text-gray-500 mt-1">Across all semesters</p>
+              </div>
+              <div
+                class="bg-white p-6 rounded-2xl shadow-md hover:shadow-lg transition"
+              >
+                <h3 class="text-sm text-gray-500">Average Attendance</h3>
+
+                <div class="text-4xl font-bold mt-2 text-[#283618]">82%</div>
+
+                <p class="text-sm text-gray-500 mt-1">Department average</p>
+              </div>
+            </div>
+            <!-- grid-1 -->
+            <div
+              class="bg-white p-6 rounded-2xl shadow-md hover:shadow-md transition"
+            >
+              <h2 class="text-lg font-semibold text-gray-700 mb-4">
+                Students by Semester
+              </h2>
+              <div class="grid grid-cols-3 gap-4">
+                <div
+                  class="bg-[#e9f5db] p-4 rounded-lg text-center hover:shadow-md transition"
+                >
+                  <p class="text-sm text-gray-500">Semester 1</p>
+                  <p class="text-2xl font-bold text-[#283618]">30</p>
+                </div>
+
+                <div
+                  class="bg-[#e9f5db] p-4 rounded-lg text-center hover:shadow-md transition"
+                >
+                  <p class="text-sm text-gray-500">Semester 2</p>
+                  <p class="text-2xl font-bold text-[#283618]">28</p>
+                </div>
+
+                <div
+                  class="bg-[#e9f5db] p-4 rounded-lg text-center hover:shadow-md transition"
+                >
+                  <p class="text-sm text-gray-500">Semester 3</p>
+                  <p class="text-2xl font-bold text-[#283618]">25</p>
+                </div>
+
+                <div
+                  class="bg-[#e9f5db] p-4 rounded-lg text-center hover:shadow-md transition"
+                >
+                  <p class="text-sm text-gray-500">Semester 4</p>
+                  <p class="text-2xl font-bold text-[#283618]">22</p>
+                </div>
+
+                <div
+                  class="bg-[#e9f5db] p-4 rounded-lg text-center hover:shadow-md transition"
+                >
+                  <p class="text-sm text-gray-500">Semester 5</p>
+                  <p class="text-2xl font-bold text-[#283618]">18</p>
+                </div>
+
+                <div
+                  class="bg-[#e9f5db] p-4 rounded-lg text-center hover:shadow-md transition"
+                >
+                  <p class="text-sm text-gray-500">Semester 6</p>
+                  <p class="text-2xl font-bold text-[#283618]">15</p>
+                </div>
+              </div>
+            </div>
+            <!--grid-2 -->
+            <div
+              class="bg-white p-6 rounded-2xl shadow-md hover:shadow-md transition"
+            >
+              <h2 class="text-lg font-semibold text-gray-700 mb-4">
+                Recent Announcements
+              </h2>
+
+              <ul class="space-y-4 text-gray-700">
+                <li class="flex items-start gap-3">
+                  <span class="text-lg">📢</span>
+
+                  <div>
+                    <p class="font-medium">
+                      Faculty meeting scheduled for Friday.
+                    </p>
+
+                    <p class="text-sm text-gray-500">Posted 2 hours ago</p>
+                  </div>
+                </li>
+                <li class="flex items-start gap-3">
+                  <span class="text-lg">📢</span>
+
+                  <div>
+                    <p class="font-medium">
+                      Submit internal marks before 25 March.
+                    </p>
+
+                    <p class="text-sm text-gray-500">Posted yesterday</p>
+                  </div>
+                </li>
+
+                <li class="flex items-start gap-3">
+                  <span class="text-lg">📢</span>
+
+                  <div>
+                    <p class="font-medium">
+                      AI workshop will be conducted next week.
+                    </p>
+
+                    <p class="text-sm text-gray-500">Posted 3 days ago</p>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <!--end of ADMIN cards -->
+      </div>
+    </div>
+    <script>
+      feather.replace();
+    </script>
+    <script src="../js/layout.js"></script>
+  </body>
+</html>

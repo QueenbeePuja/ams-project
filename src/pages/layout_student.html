@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/output.css">
+    <script src="https://unpkg.com/feather-icons"></script>
+    <title>Home</title>
+</head>
+
+<body>
+<div class="main-page flex h-screen">
+
+    <div class="left-page w-64 flex flex-col h-screen sticky top-0">
+        <div class="top-left-user-content flex-[3] bg-[#606c38] p-4 text-white flex flex-col">
+            <img src="../assets/profilepic_demo.jpg" 
+            class="w-32 h-32 rounded-full object-cover border-4 border-[#283618] self-center mb-1">
+           
+            <!-- Name -->
+            <div class="text-xl font-semibold text-center tracking-wider">
+                PUJA
+            </div>
+
+            <!-- College Email -->
+            <div class="text-sm text-center opacity-80">
+                puja@college.edu
+            </div>
+
+            <!-- Bottom row -->
+            <div class="flex justify-between text-sm opacity-80 mt-1">
+                <div>24223070</div>
+                <div>MCA</div>
+            </div>
+        </div>
+        <div class="side-bar flex-[7] flex flex-col gap-3 p-4 bg-[#283618] text-white border-t border-[#283618]">
+            <div class="p-2 hover:bg-[#606c38] rounded cursor-pointer border-2 border-[#606c38] text-center transition duration-200">Dashboard</div>
+            <div class="p-2 hover:bg-[#606c38] rounded cursor-pointer border-2 border-[#606c38] text-center transition duration-200">Courses</div>
+            <div class="p-2 hover:bg-[#606c38] rounded cursor-pointer border-2 border-[#606c38] text-center transition duration-200">Attendance</div>
+        </div>
+    </div>
+
+    <div class="right-page flex flex-col flex-1">
+
+        <div class="nav-bar h-16 bg-[#283618] flex items-center justify-between px-12 text-white shadow-md">
+
+            <div class="p-2 hover:bg-[#606c38] rounded cursor-pointer border-2 border-[#606c38] text-center">Today</div>
+
+            <div class="flex gap-6 items-center">
+                <div class="relative p-2 hover:bg-[#606c38] rounded cursor-pointer border-2 border-[#606c38] flex items-center justify-center">
+                    <i data-feather="bell"></i>
+                    <span class="absolute -top-2 -right-2 bg-red-500 text-white text-xs w-4 h-4 flex items-center justify-center rounded-full">3</span>
+                </div>
+                <div class="p-2 hover:bg-[#606c38] rounded cursor-pointer border-2 border-[#606c38] text-center transition">
+                    <i data-feather="user"></i>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="main-body-content flex-1 bg-[#fefae0] p-6 mt-2"></div>
+
+    </div>
+
+</div>
+<script>
+feather.replace()
+</script>
+</body>
+</html>

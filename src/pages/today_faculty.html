@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../css/output.css" />
+    <script src="https://unpkg.com/feather-icons"></script>
+    <title>Home</title>
+    <script>
+      const role = localStorage.getItem("role");
+
+      if (!role) {
+        window.location.href = "http://127.0.0.1:5500/src/pages/login.html";
+      }
+
+      if (role !== "Faculty") {
+        window.location.href = "http://127.0.0.1:5500/src/pages/login.html";
+      }
+    </script>
+  </head>
+
+  <body>
+    <div class="main-page flex h-screen">
+      <div id="sidebar"></div>
+
+      <div class="right-page flex flex-col flex-1">
+        <div id="navbar"></div>
+        <!-- Main body content where all the backend work will appear -->
+        <div class="main-body-content flex-1 bg-[#fefae0] p-10">
+          <div class="grid gap-6">
+            <!-- TODAY'S CLASSES -->
+            <div class="bg-white p-6 rounded-2xl shadow-md">
+              <h2
+                class="text-lg font-semibold text-gray-700 mb-4 tracking-wide"
+              >
+                Today's Classes
+              </h2>
+
+              <div class="space-y-3">
+                <!-- Class Row  enters from here-->
+                <!-- Class Row 1-->
+                <div
+                  class="bg-green-500 text-white py-3 px-4 rounded-lg grid grid-cols-3 items-center hover:brightness-110 transition duration-200 cursor-pointer"
+                >
+                  <div class="flex-1 text-sm">CS501 • 9:00–9:50 • Room 204</div>
+
+                  <div class="flex-1 text-center font-semibold text-lg">
+                    Data Mining
+                  </div>
+
+                  <div class="justify-self-end">
+                    <button
+                      class="bg-white text-green-700 px-4 py-1.5 rounded-md text-sm font-semibold"
+                    >
+                      Take Attendance
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Class Row 2-->
+                <div
+                  class="bg-yellow-400 py-3 px-4 rounded-lg grid grid-cols-3 items-center hover:brightness-110 transition duration-200 cursor-pointer"
+                >
+                  <div class="flex-1 text-sm">
+                    CS502 • 9:50–10:40 • Room 302
+                  </div>
+
+                  <div class="flex-1 text-center font-semibold text-lg">
+                    Operating Systems
+                  </div>
+                  <div class="justify-self-end">
+                    <button
+                      class="bg-white text-green-700 px-4 py-1.5 rounded-md text-sm font-semibold"
+                    >
+                      Take Attendance
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- LOWER SECTION -->
+            <div class="grid grid-cols-2 gap-6">
+              <!-- POST MESSAGE -->
+              <div class="bg-white p-6 rounded-2xl shadow-md">
+                <h2 class="text-lg font-semibold text-gray-700 mb-4">
+                  Post Message
+                </h2>
+
+                <select class="w-full border rounded-lg p-2 mb-3">
+                  <option>Select Subject</option>
+                  <option>Data Mining</option>
+                  <option>Operating Systems</option>
+                </select>
+
+                <textarea
+                  class="w-full border rounded-lg p-3 h-24"
+                  placeholder="Write message for students..."
+                ></textarea>
+
+                <button
+                  class="mt-3 bg-[#283618] text-white px-4 py-2 rounded-lg"
+                >
+                  Post Message
+                </button>
+              </div>
+
+              <!-- ANNOUNCEMENTS -->
+              <div class="bg-white p-6 rounded-2xl shadow-md">
+                <h2 class="text-lg font-semibold text-gray-700 mb-4">
+                  Announcements
+                </h2>
+
+                <ul class="space-y-3 text-gray-700">
+                  <li class="flex items-start gap-2">
+                    <span>📢</span>
+                    <span>Faculty meeting scheduled for Friday.</span>
+                  </li>
+
+                  <li class="flex items-start gap-2">
+                    <span>📢</span>
+                    <span>Submit internal marks before 25 March.</span>
+                  </li>
+
+                  <li class="flex items-start gap-2">
+                    <span>📢</span>
+                    <span>Workshop on AI next week.</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      feather.replace();
+    </script>
+    <script src="../js/layout.js"></script>
+    <script src="/src/js/common.js"></script>
+  </body>
+</html>
