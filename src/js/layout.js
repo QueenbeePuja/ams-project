@@ -11,6 +11,45 @@ async function loadComponent(elementId, filePath) {
 async function initLayout() {
   await loadComponent("sidebar", "../component/sidebar.html");
   await loadComponent("navbar", "../component/navbar.html");
+  loadSidebarMenu();
+}
+
+function loadSidebarMenu() {
+  const role = localStorage.getItem("role");
+  const menu = document.getElementById("menuContent");
+
+  console.log("Sidebar role:", role);
+
+  if (!menu) {
+    console.error("menuContent not found ❌");
+    return;
+  }
+
+  if (role === "Admin") {
+    menu.innerHTML = `
+      <div class="p-2 hover:bg-[#606c38] rounded cursor-pointer border-2 border-[#606c38] text-center transition">
+        <a href="../pages/today_admin.html">Dashboard</a>
+      </div>
+
+      <div class="p-2 hover:bg-[#606c38] rounded cursor-pointer border-2 border-[#606c38] text-center transition">
+        <a href="../pages/manage_student_admin.html">Manage Students</a>
+      </div>
+
+      <div class="p-2 hover:bg-[#606c38] rounded cursor-pointer border-2 border-[#606c38] text-center transition">
+        Manage Faculty
+      </div>
+    `;
+  } else if (role === "Student") {
+    menu.innerHTML = `
+      <div class="p-2 text-center">Dashboard</div>
+      <div class="p-2 text-center">Attendance</div>
+    `;
+  } else if (role === "Faculty") {
+    menu.innerHTML = `
+      <div class="p-2 text-center">Dashboard</div>
+      <div class="p-2 text-center">Take Attendance</div>
+    `;
+  }
 }
 
 initLayout();
