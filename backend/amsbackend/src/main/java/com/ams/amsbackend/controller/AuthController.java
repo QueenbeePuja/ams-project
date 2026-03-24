@@ -1,15 +1,19 @@
 package com.ams.amsbackend.controller;
 
 import com.ams.amsbackend.config.JwtUtil;
+import com.ams.amsbackend.model.Faculty;
 import com.ams.amsbackend.model.LoginRequest;
 import com.ams.amsbackend.model.Student;
 import com.ams.amsbackend.model.User;
+import com.ams.amsbackend.repository.FacultyRepository;
 import com.ams.amsbackend.repository.StudentRepository;
 import com.ams.amsbackend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -29,6 +33,8 @@ public class AuthController {
 
     @Autowired
     private StudentRepository studentRepository;
+    @Autowired
+    private FacultyRepository facultyRepository;
 
     @GetMapping("/test")
     public String test() {
@@ -51,6 +57,44 @@ public class AuthController {
         );
 
    }
+   @GetMapping("/admin/students")
+   public List<Student> getAllStudents(){
+        return studentRepository.findAll();
+   }
+   @DeleteMapping("/admin/students/user/{userId}")
+   public ResponseEntity<String> deleteStudentByUserId(@PathVariable String userId) {
+
+       Optional<Student> studentOpt = studentRepository.findByUserId(userId);
+
+       if (studentOpt.isPresent()) {
+           studentRepository.delete(studentOpt.get());
+           return ResponseEntity.ok("Student deleted successfully");
+       } else {
+           return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                   .body("Student not found");
+       }
+   }
+   @PostMapping("/admin/faculty")
+   public ResponseEntity<Faculty> addFaculty(@RequestBody Faculty faculty){
+        return ResponseEntity.ok(facultyRepository.save(faculty));
+   }
+    @GetMapping("/admin/faculty")
+    public List<Faculty> getAllFaculty() {
+        return facultyRepository.findAll();
+    }
+    @DeleteMapping("/admin/faculty/user/{userId}")
+    public ResponseEntity<String> deleteFaculty(@PathVariable String userId) {
+
+        Optional<Faculty> facultyOpt = facultyRepository.findByUserId(userId);
+
+        if (facultyOpt.isPresent()) {
+            facultyRepository.delete(facultyOpt.get());
+            return ResponseEntity.ok("Faculty deleted successfully");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Faculty not found");
+        }
+    }
 
     @GetMapping("/student/test")
     public String studentTest(){

@@ -79,4 +79,64 @@ async function submitStudents() {
 
   // Reset student count input
   document.getElementById("studentCount").value = "";
+  fetchStudents();
 }
+async function fetchStudents() {
+  try {
+    const token = localStorage.getItem("token");
+    const response = await fetch("http://localhost:8081/api/admin/students", {
+      method: "GET",
+      headers: {
+        Authorization: "Bearer " + token,
+        "Content-Type": "applocation/json",
+      },
+    });
+    const students = await response.json();
+
+    const tableBody = document.getElementById("studentTableBody");
+    tableBody.innerHTML = "";
+
+    students.forEach((student) => {
+      const row = `
+        <tr class="border-b hover:bg-gray-50">
+          <td class="py-3">${student.userId}</td>
+          <td>${student.fullName}</td>
+          <td>${student.collegeEmail}</td>
+          <td>${student.currentSemester}</td>
+          <td class="flex gap-3 py-3">
+            <button class="text-blue-600 hover:underline">Edit</button>
+            <button onclick="deleteStudent('${student.userId}')" class="text-red-600 hover:underline">Delete</button>
+          </td>
+        </tr>
+      `;
+      tableBody.innerHTML += row;
+    });
+  } catch (error) {
+    console.error("Error fetching students: ", error);
+  }
+}
+async function deleteStudent(userId) {
+  try {
+    const token = localStorage.getItem("token");
+    const response = await fetch(
+      `http://localhost:8081/api/admin/students/user/${userId}`,
+      {
+        method: "DELETE",
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      },
+    );
+    if (response.ok) {
+      alert("Student deleted successfully");
+
+      // 🔥 refresh table
+      fetchStudents();
+    } else {
+      console.error("Delete failed");
+    }
+  } catch (error) {
+    console.error("Error in deleting student:", error);
+  }
+}
+window.onload = fetchStudents;

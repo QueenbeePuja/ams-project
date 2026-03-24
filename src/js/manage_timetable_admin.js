@@ -13,6 +13,7 @@ const slots = [
   "4:30-5:20",
   "5:20-6:10",
 ];
+let facultyData = [];
 
 function generateTimetable() {
   const tbody = document.getElementById("timetable-body");
@@ -85,14 +86,10 @@ function createSlotCell(day, slotIndex) {
 
                 <select class="course border rounded p-1 w-full">
                     <option value="">Course</option>
-                    <option value="CS501">CS501</option>
-                    <option value="CS502">CS502</option>
                 </select>
 
                 <select class="faculty border rounded p-1 w-full">
                     <option value="">Faculty</option>
-                    <option>Sharma</option>
-                    <option>Khan</option>
                 </select>
 
                 <select class="room border rounded p-1 w-full">
@@ -140,6 +137,18 @@ document.addEventListener("change", function (e) {
     if (e.target.value === "class") {
       fields.classList.remove("hidden");
       display.classList.add("hidden");
+
+      const facultySelect = cell.querySelector(".faculty");
+
+      facultySelect.innerHTML = `<option value="">Faculty</option>`;
+
+      facultyData.forEach((f) => {
+        facultySelect.innerHTML += `
+      <option value="${f.fullName}">
+        ${f.fullName}
+      </option>
+    `;
+      });
     } else {
       fields.classList.add("hidden");
 
@@ -157,10 +166,14 @@ document
     const cells = document.querySelectorAll("td[data-day]");
 
     let timetableData = [];
-
+    if (!semester) {
+      alert("Select semester before saving");
+      return;
+    }
     cells.forEach((cell) => {
-      const day = cell.dataset.day;
-      const slot = cell.dataset.slot;
+      const day = cell.dataset.day.toUpperCase();
+      const slotIndex = cell.dataset.slot;
+      const time = slots[slotIndex];
 
       const slotType = cell.querySelector(".slot-type").value;
 
@@ -173,21 +186,36 @@ document
         faculty = cell.querySelector(".faculty")?.value || "";
         room = cell.querySelector(".room")?.value || "";
       }
-
-      timetableData.push({
-        day,
-        slot,
-        slotType,
-        course,
-        faculty,
-        room,
-      });
+      if (slotType === "class") {
+        timetableData.push({
+          day,
+          time,
+          slotType: "CLASS",
+          course,
+          faculty,
+          room,
+        });
+      }
     });
     const payload = {
       semester: semester,
       timetable: timetableData,
     };
-    console.log(payload);
+    fetch("http://localhost:8081/timetable", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    })
+      .then((res) => res.text())
+      .then((data) => {
+        alert(data);
+      })
+      .catch((err) => {
+        console.error(err);
+        alert("Error saving timetable");
+      });
   });
 
 document
@@ -217,5 +245,43 @@ document
       });
     }
   });
+function updateSubjectDropdowns(subjects) {
+  const selects = document.querySelectorAll(".course");
+
+  selects.forEach((select) => {
+    select.innerHTML = `<option value="">Course</option>`;
+
+    subjects.forEach((sub) => {
+      select.innerHTML += `
+        <option value="${sub.code}">
+          ${sub.code} - ${sub.name}
+        </option>
+      `;
+    });
+  });
+}
+
 generateHeader();
 generateTimetable();
+document
+  .getElementById("semester-select")
+  .addEventListener("change", function () {
+    const semester = this.value;
+
+    if (!semester) return;
+
+    fetch(`http://localhost:8081/subjects/${semester}`)
+      .then((res) => res.json())
+      .then((data) => {
+        updateSubjectDropdowns(data);
+      })
+      .catch((err) => {
+        console.error("Error fetching subjects:", err);
+      });
+  });
+fetch("http://localhost:8081/faculty")
+  .then((res) => res.json())
+  .then((data) => {
+    console.log("FACULTY:", data); // debug
+    facultyData = data;
+  });

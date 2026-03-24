@@ -51,6 +51,9 @@ public class SecurityConfig {
                         .requestMatchers("/api/admin/**").hasAuthority("Admin")
                         .requestMatchers("/api/faculty/**").hasAuthority("Faculty")
                         .requestMatchers("/api/student/**").hasAuthority("Student")
+                        .requestMatchers("/timetable/**").permitAll()
+                        .requestMatchers("/subjects/**").permitAll()
+                        .requestMatchers("/faculty/**").permitAll()
                         .anyRequest().authenticated()  // 🔥 Enables all protection
                 )
                 .formLogin(form -> form.disable())

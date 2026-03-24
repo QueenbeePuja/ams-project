@@ -22,6 +22,12 @@ public class JwtFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse
                                     response, FilterChain filterChain)
             throws ServletException, IOException {
+        String path = request.getRequestURI();
+
+        if (path.contains("/timetable")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
         System.out.println("JWT FILTER RUNNING");
         String authHeader = request.getHeader("Authorization");
         if(authHeader != null && authHeader.startsWith("Bearer ")){

@@ -36,7 +36,11 @@ function loadSidebarMenu() {
       </div>
 
       <div class="p-2 hover:bg-[#606c38] rounded cursor-pointer border-2 border-[#606c38] text-center transition">
-        Manage Faculty
+      <a href="../pages/manage_faculty_admin.html">Manage Faculty</a>
+      </div>
+
+      <div class="p-2 hover:bg-[#606c38] rounded cursor-pointer border-2 border-[#606c38] text-center transition">
+      <a href="../pages/manage_timetable_admin.html">Upload Timetable</a>
       </div>
     `;
   } else if (role === "Student") {
