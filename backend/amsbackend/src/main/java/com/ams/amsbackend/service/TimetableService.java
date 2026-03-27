@@ -4,6 +4,7 @@ import com.ams.amsbackend.model.Timetable;
 import com.ams.amsbackend.repository.TimetableRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import com.ams.amsbackend.model.Faculty;
 
 import java.util.List;
 

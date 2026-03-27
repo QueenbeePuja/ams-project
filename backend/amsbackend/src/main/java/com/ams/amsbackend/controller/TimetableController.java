@@ -1,6 +1,11 @@
 package com.ams.amsbackend.controller;
 
+import com.ams.amsbackend.model.Faculty;
+import com.ams.amsbackend.model.Subject;
 import com.ams.amsbackend.model.Timetable;
+import com.ams.amsbackend.repository.FacultyRepository;
+import com.ams.amsbackend.repository.SubjectRepository;
+import com.ams.amsbackend.repository.TimetableRepository;
 import com.ams.amsbackend.service.TimetableService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +21,14 @@ import java.util.Map;
 public class TimetableController {
     @Autowired
     private TimetableService service;
+    @Autowired
+    private FacultyRepository facultyRepository;
+
+    @Autowired
+    private SubjectRepository subjectRepository;
+   @Autowired
+   private TimetableRepository repository;
+
     @PostMapping
     public ResponseEntity<?> save(@RequestBody Map<String,Object> payload) {
     int semester = Integer.parseInt(payload.get("semester").toString());
@@ -30,12 +43,17 @@ public class TimetableController {
             t.setSemester(semester);
             t.setRoom(item.get("room").toString());
             t.setSlotType(item.get("slotType").toString());
-            t.setSubject(item.get("course").toString());
-            t.setFaculty(item.get("faculty").toString());
+            Long facultyId = Long.parseLong(item.get("facultyId").toString());
+            Long subjectId = Long.parseLong(item.get("subjectId").toString());
 
-            if (t.getFaculty().isEmpty() || t.getSubject().isEmpty()) {
-                continue; // skip invalid entries
-            }
+            Faculty faculty = facultyRepository.findById(facultyId)
+                    .orElseThrow(() -> new RuntimeException("Faculty not found"));
+
+            Subject subject = subjectRepository.findById(subjectId)
+                    .orElseThrow(() -> new RuntimeException("Subject not found"));
+
+            t.setFaculty(faculty);
+            t.setSubject(subject);
             list.add(t);
         }
         System.out.println("Saving timetable: " + list.size() + " entries");
@@ -45,5 +63,17 @@ public class TimetableController {
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
+    }
+    @GetMapping("/conflicts")
+    public List<Long> getConflicts(@RequestParam String day, @RequestParam String time){
+        List<Timetable> entries = repository.findByDayAndTimeSlot(day,time);
+        return  entries.stream()
+                .filter(t -> t.getFaculty() != null)
+                .map(t -> t.getFaculty().getId())
+                .toList();
+    }
+    @GetMapping("/faculty/{facultyId}")
+    public List<Timetable> getByFaculty (@PathVariable Long facultyId){
+        return repository.findByFacultyId(facultyId);
     }
 }

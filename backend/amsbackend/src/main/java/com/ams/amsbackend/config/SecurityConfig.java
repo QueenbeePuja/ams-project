@@ -48,10 +48,11 @@ public class SecurityConfig {
                 )
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/login","/api/register").permitAll()
-                        .requestMatchers("/api/admin/**").hasAuthority("Admin")
-                        .requestMatchers("/api/faculty/**").hasAuthority("Faculty")
-                        .requestMatchers("/api/student/**").hasAuthority("Student")
                         .requestMatchers("/timetable/**").permitAll()
+                        .requestMatchers("/api/admin/**").hasRole("Admin")
+                        .requestMatchers("/api/faculty/**").hasRole("Faculty")
+                        .requestMatchers("/api/student/**").hasAnyRole("Student","Faculty")
+
                         .requestMatchers("/subjects/**").permitAll()
                         .requestMatchers("/faculty/**").permitAll()
                         .anyRequest().authenticated()  // 🔥 Enables all protection

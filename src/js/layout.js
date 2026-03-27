@@ -28,7 +28,7 @@ function loadSidebarMenu() {
   if (role === "Admin") {
     menu.innerHTML = `
       <div class="p-2 hover:bg-[#606c38] rounded cursor-pointer border-2 border-[#606c38] text-center transition">
-        <a href="../pages/today_admin.html">Dashboard</a>
+        <a href="../pages/dashboard_admin.html">Dashboard</a>
       </div>
 
       <div class="p-2 hover:bg-[#606c38] rounded cursor-pointer border-2 border-[#606c38] text-center transition">
@@ -50,8 +50,12 @@ function loadSidebarMenu() {
     `;
   } else if (role === "Faculty") {
     menu.innerHTML = `
-      <div class="p-2 text-center">Dashboard</div>
-      <div class="p-2 text-center">Take Attendance</div>
+      <div class="p-2 hover:bg-[#606c38] rounded cursor-pointer border-2 border-[#606c38] text-center transition">
+        <a href="../pages/dashboard_faculty.html">Dashboard</a>
+      </div>
+      <div class="p-2 hover:bg-[#606c38] rounded cursor-pointer border-2 border-[#606c38] text-center transition">
+        <a href="../pages/attendance_faculty.html">Take Attendence</a>
+      </div>
     `;
   }
 }

@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -100,13 +101,18 @@ public class AuthController {
     public String studentTest(){
         return "Student only";
     }
+
+    @GetMapping("/student/semester/{semester}")
+    public List<Student> getStudentsBySemester(@PathVariable int semester) {
+        return studentRepository.findByCurrentSemester(semester);
+    }
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginUser) {
-
+        System.out.println("LOGIN ATTEMPT: " + loginUser.getUserId());
         Optional<User> userOptional =
                 userRepository.findByUserId(
                         loginUser.getUserId());
-
+        System.out.println("USER FOUND: " + userOptional.isPresent());
         if (userOptional.isEmpty()) {
             return ResponseEntity.status(401).body("User not found");
         }
@@ -116,13 +122,29 @@ public class AuthController {
         // 🔥 THIS IS THE FIX
         if (passwordEncoder.matches(loginUser.getPassword(), user.getPassword())) {
             String token = jwtUtil.generateToken(user.getUserId(),user.getRole());
-            return ResponseEntity.ok(
-                    Map.of(
-                            "token", token,
-                            "role" , user.getRole(),
-                            "userId" , user.getUserId()
-                    )
-            );
+            Long facultyId = null;
+
+                // ✅ fetch facultyId using userId
+            if (user.getRole().equals("Faculty")) {
+                Optional<Faculty> facultyOptional =
+                        facultyRepository.findByUserId(user.getUserId());
+
+                if (facultyOptional.isPresent()) {
+                    facultyId = facultyOptional.get().getId();
+                }
+            }
+
+            // ⚠️ use HashMap (Map.of fails with null)
+            Map<String, Object> response = new HashMap<>();
+            response.put("token", token);
+            response.put("role", user.getRole());
+            response.put("userId", user.getUserId());
+
+            if (facultyId != null) {
+                response.put("facultyId", facultyId);
+            }
+
+            return ResponseEntity.ok(response);
         } else {
             return ResponseEntity.status(401).body("Invalid password");
         }

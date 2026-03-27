@@ -23,20 +23,22 @@ public class JwtFilter extends OncePerRequestFilter {
                                     response, FilterChain filterChain)
             throws ServletException, IOException {
         String path = request.getRequestURI();
-
-        if (path.contains("/timetable")) {
+        if (path.contains("/api/login") || path.contains("/timetable")) {
             filterChain.doFilter(request, response);
             return;
         }
+
         System.out.println("JWT FILTER RUNNING");
         String authHeader = request.getHeader("Authorization");
         if(authHeader != null && authHeader.startsWith("Bearer ")){
+            System.out.println("AUTH HEADER: " + authHeader);
             String token = authHeader.substring(7);
             try{
                 String userId = jwtUtil.extractUserId(token);
                  String role = jwtUtil.extractRole(token);
                  List<SimpleGrantedAuthority> authorities =
-                         List.of(new SimpleGrantedAuthority(role));
+                         List.of(new SimpleGrantedAuthority("ROLE_" + role));
+                System.out.println("ROLE FROM TOKEN: " + role);
                 UsernamePasswordAuthenticationToken auth =
                         new UsernamePasswordAuthenticationToken(
                                 userId,null,authorities

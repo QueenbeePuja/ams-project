@@ -14,8 +14,29 @@ public class Timetable {
     private  String room;
     private  String slotType;
 
-    private String subject;
-    private String faculty;
+    @ManyToOne
+    @JoinColumn(name = "subject_id")
+    private Subject subject;
+
+    @ManyToOne
+    @JoinColumn(name = "faculty_id")
+    private Faculty faculty;
+
+    public Subject getSubject() {
+        return subject;
+    }
+
+    public Faculty getFaculty() {
+        return faculty;
+    }
+
+    public void setSubject(Subject subject) {
+        this.subject = subject;
+    }
+
+    public void setFaculty(Faculty faculty) {
+        this.faculty = faculty;
+    }
 
     public Long getId() {
         return id;
@@ -65,19 +86,5 @@ public class Timetable {
         this.slotType = slotType;
     }
 
-    public String getSubject() {
-        return subject;
-    }
 
-    public void setSubject(String subject) {
-        this.subject = subject;
-    }
-
-    public String getFaculty() {
-        return faculty;
-    }
-
-    public void setFaculty(String faculty) {
-        this.faculty = faculty;
-    }
 }

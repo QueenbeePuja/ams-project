@@ -111,23 +111,28 @@ document.addEventListener("click", function (e) {
   if (e.target.classList.contains("apply-slot")) {
     const cell = e.target.closest("td");
 
-    const course = cell.querySelector(".course").value;
-    const faculty = cell.querySelector(".faculty").value;
-    const room = cell.querySelector(".room").value;
+    const courseSelect = cell.querySelector(".course");
+    const facultySelect = cell.querySelector(".faculty");
+    const roomSelect = cell.querySelector(".room");
 
     const display = cell.querySelector(".slot-display");
     const fields = cell.querySelector(".class-fields");
 
+    const courseText = courseSelect.options[courseSelect.selectedIndex].text;
+    const facultyText = facultySelect.options[facultySelect.selectedIndex].text;
+    const room = roomSelect.value;
+
     display.innerHTML = `
-            ${course}
-            <hr class="border-gray-400">
-            ${faculty} | ${room}
-        `;
+      ${courseText}
+      <hr class="border-gray-400">
+      ${facultyText} | ${room}
+    `;
 
     fields.classList.add("hidden");
     display.classList.remove("hidden");
   }
 });
+
 document.addEventListener("change", function (e) {
   if (e.target.classList.contains("slot-type")) {
     const cell = e.target.closest("td");
@@ -140,15 +145,31 @@ document.addEventListener("change", function (e) {
 
       const facultySelect = cell.querySelector(".faculty");
 
-      facultySelect.innerHTML = `<option value="">Faculty</option>`;
+      const day = cell.dataset.day.toUpperCase();
+      const slotIndex = cell.dataset.slot;
+      const time = slots[slotIndex];
 
-      facultyData.forEach((f) => {
-        facultySelect.innerHTML += `
-      <option value="${f.fullName}">
-        ${f.fullName}
-      </option>
-    `;
-      });
+      facultySelect.innerHTML = `<option value="">Faculty</option>`;
+      fetch(`http://localhost:8081/timetable/conflicts?day=${day}&time=${time}`)
+        .then((res) => res.json())
+        .then((usedFaculty) => {
+          facultySelect.innerHTML = `<option value="">Faculty</option>`;
+          console.log("USED:", usedFaculty);
+          console.log("FACULTY:", facultyData);
+
+          facultyData.forEach((f) => {
+            if (!usedFaculty.includes(Number(f.id))) {
+              facultySelect.innerHTML += `
+          <option value="${f.id}">
+            ${f.fullName}
+          </option>
+        `;
+            }
+          });
+        })
+        .catch((err) => {
+          console.error("Conflict API error:", err);
+        });
     } else {
       fields.classList.add("hidden");
 
@@ -177,13 +198,13 @@ document
 
       const slotType = cell.querySelector(".slot-type").value;
 
-      let course = "";
-      let faculty = "";
+      let subjectId = "";
+      let facultyId = "";
       let room = "";
 
       if (slotType === "class") {
-        course = cell.querySelector(".course")?.value || "";
-        faculty = cell.querySelector(".faculty")?.value || "";
+        subjectId = cell.querySelector(".course")?.value || "";
+        facultyId = cell.querySelector(".faculty")?.value || "";
         room = cell.querySelector(".room")?.value || "";
       }
       if (slotType === "class") {
@@ -191,8 +212,8 @@ document
           day,
           time,
           slotType: "CLASS",
-          course,
-          faculty,
+          subjectId,
+          facultyId,
           room,
         });
       }
@@ -201,6 +222,7 @@ document
       semester: semester,
       timetable: timetableData,
     };
+    console.log("PAYLOAD:", payload);
     fetch("http://localhost:8081/timetable", {
       method: "POST",
       headers: {
@@ -211,6 +233,9 @@ document
       .then((res) => res.text())
       .then((data) => {
         alert(data);
+        if (data.toLowerCase().includes("success")) {
+          resetTimetable();
+        }
       })
       .catch((err) => {
         console.error(err);
@@ -218,33 +243,29 @@ document
       });
   });
 
-document
-  .getElementById("reset-timetable")
-  .addEventListener("click", function () {
-    if (confirm("Are you sure you want to reset the timetable?")) {
-      const cells = document.querySelectorAll("td[data-day]");
+function resetTimetable() {
+  const cells = document.querySelectorAll("td[data-day]");
 
-      cells.forEach((cell) => {
-        const slotType = cell.querySelector(".slot-type");
-        const fields = cell.querySelector(".class-fields");
-        const display = cell.querySelector(".slot-display");
+  cells.forEach((cell) => {
+    const slotType = cell.querySelector(".slot-type");
+    const fields = cell.querySelector(".class-fields");
+    const display = cell.querySelector(".slot-display");
 
-        slotType.value = "";
+    slotType.value = "";
 
-        if (fields) {
-          fields.classList.add("hidden");
-        }
-        if (display) {
-          display.classList.add("hidden");
-          display.innerHTML = "";
-        }
-
-        cell.querySelectorAll("select").forEach((select) => {
-          select.selectedIndex = 0;
-        });
-      });
+    if (fields) {
+      fields.classList.add("hidden");
     }
+    if (display) {
+      display.classList.add("hidden");
+      display.innerHTML = "";
+    }
+
+    cell.querySelectorAll("select").forEach((select) => {
+      select.selectedIndex = 0;
+    });
   });
+}
 function updateSubjectDropdowns(subjects) {
   const selects = document.querySelectorAll(".course");
 
@@ -253,7 +274,7 @@ function updateSubjectDropdowns(subjects) {
 
     subjects.forEach((sub) => {
       select.innerHTML += `
-        <option value="${sub.code}">
+        <option value="${sub.id}">
           ${sub.code} - ${sub.name}
         </option>
       `;

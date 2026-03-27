@@ -18,4 +18,6 @@ public class SubjectController {
     public List<Subject> getSubjects(@PathVariable int semester){
         return repository.findBySemester(semester);
     }
+
+
 }

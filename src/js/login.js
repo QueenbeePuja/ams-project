@@ -64,6 +64,7 @@ form.addEventListener("submit", async function (event) {
       if (result.role == "Admin") {
         window.location.href = "../pages/today_admin.html";
       } else if (result.role == "Faculty") {
+        localStorage.setItem("facultyId", result.facultyId);
         window.location.href = "../pages/today_faculty.html";
       } else {
         window.location.href = "../pages/today_student.html";
