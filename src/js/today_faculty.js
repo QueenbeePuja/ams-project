@@ -1,16 +1,35 @@
+function shouldShowClass(cls) {
+  const now = new Date();
+
+  const [startStr, endStr] = cls.timeSlot.split("-");
+
+  let [endH, endM] = endStr.trim().split(":").map(Number);
+
+  // 🔥 FIX: convert to 24-hour format
+  // assume timetable runs between 8 AM – 6 PM
+  if (endH < 8) {
+    endH += 12; // convert 2 → 14, 3 → 15, etc.
+  }
+
+  const end = new Date();
+  end.setHours(endH, endM, 0);
+
+  return now <= end;
+}
+
 async function loadTodayClasses() {
   const facultyId = localStorage.getItem("facultyId");
 
-  const res = await fetch(
-    `http://localhost:8081/timetable/faculty/${facultyId}`,
-  );
+  const res = await apiFetch(`/timetable/faculty/${facultyId}`);
   const data = await res.json();
 
   const today = new Date()
     .toLocaleString("en-US", { weekday: "long" })
     .toUpperCase();
 
-  const todayClasses = data.filter((e) => e.day === today);
+  const todayClasses = data
+    .filter((e) => e.day === today)
+    .filter(shouldShowClass);
 
   renderTodayClasses(todayClasses);
 }

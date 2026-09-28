@@ -15,5 +15,6 @@ public interface TimetableRepository extends JpaRepository<Timetable, Long> {
     );
     List<Timetable> findByDayAndTimeSlot(String day, String timeSlot);
     List<Timetable> findByFacultyId(Long facultyId);
+    List<Timetable> findBySemester(int semester);
 }
 

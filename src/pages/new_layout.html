@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../css/output.css" />
+    <script src="https://unpkg.com/feather-icons"></script>
+    <title>Home</title>
+  </head>
+
+  <body class="m-0 bg-[#fefae0]">
+    <div class="flex flex-col min-h-screen">
+      <!-- ✅ NAVBAR (DYNAMIC) -->
+      <div id="navbar"></div>
+
+      <!-- ✅ SIDEBAR + CONTENT -->
+      <div class="flex flex-1 relative">
+        <!-- SIDEBAR (DYNAMIC) -->
+        <div id="sidebar"></div>
+
+        <!-- MAIN CONTENT -->
+        <div class="main-body-content flex-1 bg-[#fefae0] p-4">
+          <!-- 👇 YOUR CONTENT GOES HERE -->
+          <div class="text-gray-600 text-lg">Welcome to Dashboard</div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      feather.replace();
+    </script>
+
+    <script src="../js/layout.js"></script>
+    <script src="/src/js/common.js"></script>
+
+    <!-- OVERLAY -->
+    <div
+      id="overlay"
+      style="
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.1);
+        display: none;
+        z-index: 40;
+      "
+    ></div>
+  </body>
+</html>

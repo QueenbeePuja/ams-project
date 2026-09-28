@@ -5,21 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="../css/output.css" />
     <script src="https://unpkg.com/feather-icons"></script>
-    <title>Dashboard</title>
+    <title>Manage Faculty</title>
   </head>
 
-  <body>
-    <div class="main-page flex h-screen">
-      <div id="sidebar"></div>
+  <body class="m-0 bg-[#fefae0]">
+    <div class="flex flex-col min-h-screen">
+      <!-- NAVBAR -->
+      <div id="navbar"></div>
 
-      <div class="right-page flex flex-col flex-1 h-full">
-        <div id="navbar"></div>
-        <!-- Main body content where all the backend work will appear -->
-        <div class="main-body-content flex-1 bg-[#fefae0] p-10 overflow-y-auto">
-          <div class="grid gap-6">
+      <!-- SIDEBAR + CONTENT -->
+      <div class="flex flex-1 relative">
+        <!-- SIDEBAR -->
+        <div id="sidebar"></div>
+
+        <!-- MAIN CONTENT -->
+        <div class="main-body-content flex-1 bg-[#fefae0] p-4 overflow-y-auto">
+          <div class="flex flex-col gap-6">
             <!-- MANAGE FACULTY -->
             <div class="bg-white p-6 rounded-2xl shadow-md">
-              <div class="flex justify-between items-center">
+              <div
+                class="flex flex-col md:flex-row md:justify-between md:items-center gap-3"
+              >
                 <h2 class="text-xl font-semibold text-gray-700">
                   Manage Faculty
                 </h2>
@@ -32,13 +38,13 @@
                 </button>
               </div>
 
-              <!-- Add Faculty Form -->
+              <!-- FORM -->
               <div id="facultyForm" class="hidden mt-6">
                 <h3 class="text-lg font-semibold text-gray-700 mb-4">
                   Add Faculty
                 </h3>
 
-                <div class="grid grid-cols-2 gap-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <label class="text-sm text-gray-600">Faculty Name</label>
                     <input
@@ -85,25 +91,25 @@
                 </button>
               </div>
             </div>
-            <!-- end of managing faculty-->
-            <!--search and filter section-->
+
+            <!-- SEARCH + FILTER -->
             <div class="bg-white p-6 rounded-2xl shadow-md">
-              <div class="flex justify-between items-center mb-4">
+              <div class="flex flex-col md:flex-row gap-4 md:justify-between">
                 <input
                   type="text"
                   placeholder="Search faculty..."
-                  class="border rounded-lg p-2 w-80"
+                  class="border rounded-lg p-2 w-full md:w-80"
                 />
 
-                <select class="border rounded-lg p-2">
+                <select class="border rounded-lg p-2 w-full md:w-auto">
                   <option>All Departments</option>
                   <option>Computer Applications</option>
                 </select>
               </div>
             </div>
-            <!--end of search and filter-->
-            <!--faculty table-->
-            <div class="bg-white p-6 rounded-2xl shadow-md">
+
+            <!-- FACULTY TABLE -->
+            <div class="bg-white p-6 rounded-2xl shadow-md overflow-x-auto">
               <table class="w-full text-left border-collapse">
                 <thead>
                   <tr class="border-b text-gray-600 text-sm">
@@ -118,17 +124,32 @@
                 <tbody id="facultyTableBody" class="text-gray-700"></tbody>
               </table>
             </div>
-            <!--end of faculty table-->
           </div>
         </div>
-        <!--end of main body -->
       </div>
     </div>
+
     <script>
       feather.replace();
     </script>
+
     <script src="../js/layout.js"></script>
     <script src="../js/manage_faculty_admin.js"></script>
-    <script src="/src/js/common.js"></script>
+    <script src="../js/common.js"></script>
+
+    <!-- OVERLAY -->
+    <div
+      id="overlay"
+      style="
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.1);
+        display: none;
+        z-index: 40;
+      "
+    ></div>
   </body>
 </html>

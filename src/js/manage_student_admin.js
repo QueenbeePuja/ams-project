@@ -51,7 +51,7 @@ async function submitStudents() {
     };
 
     try {
-      const response = await fetch("http://localhost:8081/api/admin/students", {
+      const response = await apiFetch("/api/admin/students", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -84,7 +84,7 @@ async function submitStudents() {
 async function fetchStudents() {
   try {
     const token = localStorage.getItem("token");
-    const response = await fetch("http://localhost:8081/api/admin/students", {
+    const response = await apiFetch("/api/admin/students", {
       method: "GET",
       headers: {
         Authorization: "Bearer " + token,
@@ -118,15 +118,12 @@ async function fetchStudents() {
 async function deleteStudent(userId) {
   try {
     const token = localStorage.getItem("token");
-    const response = await fetch(
-      `http://localhost:8081/api/admin/students/user/${userId}`,
-      {
-        method: "DELETE",
-        headers: {
-          Authorization: "Bearer " + token,
-        },
+    const response = await apiFetch(`/api/admin/students/user/${userId}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: "Bearer " + token,
       },
-    );
+    });
     if (response.ok) {
       alert("Student deleted successfully");
 

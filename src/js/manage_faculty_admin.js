@@ -13,7 +13,7 @@ async function addFaculty() {
       department: document.getElementById("facultyDept").value,
     };
 
-    const response = await fetch("http://localhost:8081/api/admin/faculty", {
+    const response = await apiFetch("/api/admin/faculty", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -44,15 +44,12 @@ async function deleteFaculty(userId) {
   try {
     const token = localStorage.getItem("token");
 
-    const response = await fetch(
-      `http://localhost:8081/api/admin/faculty/user/${userId}`,
-      {
-        method: "DELETE",
-        headers: {
-          Authorization: "Bearer " + token,
-        },
+    const response = await apiFetch(`/api/admin/faculty/user/${userId}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: "Bearer " + token,
       },
-    );
+    });
 
     if (response.ok) {
       alert("Faculty deleted successfully");
@@ -69,7 +66,7 @@ async function fetchFaculty() {
   try {
     const token = localStorage.getItem("token");
 
-    const response = await fetch("http://localhost:8081/api/admin/faculty", {
+    const response = await apiFetch("/api/admin/faculty", {
       method: "GET",
       headers: {
         Authorization: "Bearer " + token,

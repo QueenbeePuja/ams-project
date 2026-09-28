@@ -1,4 +1,5 @@
 const buttons = document.querySelectorAll(".role-btn");
+
 const roleInput = document.getElementById("role");
 const userIdInput = document.getElementById("userid");
 const form = document.querySelector("form");
@@ -36,19 +37,18 @@ form.addEventListener("submit", async function (event) {
       return;
     }
   }
+  localStorage.clear();
 
   // 🔥 NEW PART (API CALL)
   const data = {
     userId: userIdInput.value.trim(),
     password: passwordInput.value.trim(),
   };
+  console.log("📤 Sending:", data);
 
   try {
-    const response = await fetch("http://localhost:8081/api/login", {
+    const response = await apiFetch("/api/login", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
       body: JSON.stringify(data),
     });
 
@@ -60,7 +60,14 @@ form.addEventListener("submit", async function (event) {
     if (response.ok && result.token) {
       localStorage.setItem("token", result.token);
       localStorage.setItem("userId", result.userId);
+      localStorage.setItem("studentId", result.id);
       localStorage.setItem("role", result.role);
+
+      // 🔥 CLEAR OLD DATA
+      localStorage.removeItem("fullName");
+      localStorage.removeItem("email");
+      localStorage.removeItem("department");
+
       if (result.role == "Admin") {
         window.location.href = "../pages/today_admin.html";
       } else if (result.role == "Faculty") {
@@ -73,9 +80,8 @@ form.addEventListener("submit", async function (event) {
       alert(result || "Login failed");
     }
   } catch (error) {
-    console.log("TOKEN:", result.token);
-    console.error("Error:", error);
-    alert("Something went wrong");
+    console.error("Login Error:", error);
+    alert("Login failed - check network/backend");
   }
 });
 

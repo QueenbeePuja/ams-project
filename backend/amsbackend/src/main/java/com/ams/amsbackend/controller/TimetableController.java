@@ -76,4 +76,8 @@ public class TimetableController {
     public List<Timetable> getByFaculty (@PathVariable Long facultyId){
         return repository.findByFacultyId(facultyId);
     }
+    @GetMapping("/semester/{semester}")
+    public List<Timetable> getBySemester(@PathVariable int semester){
+        return repository.findBySemester(semester);
+    }
 }

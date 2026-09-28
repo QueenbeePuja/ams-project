@@ -106,6 +106,20 @@ public class AuthController {
     public List<Student> getStudentsBySemester(@PathVariable int semester) {
         return studentRepository.findByCurrentSemester(semester);
     }
+
+    @GetMapping("/by-userid/{userId}")
+    public Student getByUserId(@PathVariable String userId){
+        return studentRepository.findByUserId(userId)
+                .orElseThrow(() -> new RuntimeException("Student not found"));
+
+    }
+
+    @GetMapping("/faculty/by-userid/{userId}")
+    public Faculty getFacultyByUserId(@PathVariable String userId) {
+        return facultyRepository.findByUserId(userId)
+                .orElseThrow(() -> new RuntimeException("Faculty not found"));
+    }
+
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginUser) {
         System.out.println("LOGIN ATTEMPT: " + loginUser.getUserId());
@@ -133,6 +147,18 @@ public class AuthController {
                     facultyId = facultyOptional.get().getId();
                 }
             }
+            //fetch studentID using userId
+            Long studentId = null;
+
+            if (user.getRole().equals("Student")) {
+                Optional<Student> studentOptional =
+                        studentRepository.findByUserId(user.getUserId());
+
+                if (studentOptional.isPresent()) {
+                    studentId = studentOptional.get().getId();
+                }
+            }
+
 
             // ⚠️ use HashMap (Map.of fails with null)
             Map<String, Object> response = new HashMap<>();
@@ -140,6 +166,9 @@ public class AuthController {
             response.put("role", user.getRole());
             response.put("userId", user.getUserId());
 
+            if (studentId != null) {
+                response.put("id", studentId);
+            }
             if (facultyId != null) {
                 response.put("facultyId", facultyId);
             }

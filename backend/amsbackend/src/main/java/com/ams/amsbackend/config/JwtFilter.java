@@ -36,21 +36,24 @@ public class JwtFilter extends OncePerRequestFilter {
             try{
                 String userId = jwtUtil.extractUserId(token);
                  String role = jwtUtil.extractRole(token);
-                 List<SimpleGrantedAuthority> authorities =
-                         List.of(new SimpleGrantedAuthority("ROLE_" + role));
-                System.out.println("ROLE FROM TOKEN: " + role);
-                UsernamePasswordAuthenticationToken auth =
-                        new UsernamePasswordAuthenticationToken(
-                                userId,null,authorities
-                        );
 
-                auth.setDetails(
-                        new org.springframework.security.web.authentication.WebAuthenticationDetailsSource()
-                                .buildDetails(request)
-                );
-                org.springframework.security.core.context.SecurityContextHolder.getContext()
-                        .setAuthentication(auth);
-                System.out.println("AUTH SET SUCCESSFULLY");
+                 if(role!= null) {
+                     List<SimpleGrantedAuthority> authorities =
+                             List.of(new SimpleGrantedAuthority("ROLE_" + role.toUpperCase()));
+                     System.out.println("ROLE FROM TOKEN: " + role);
+                     UsernamePasswordAuthenticationToken auth =
+                             new UsernamePasswordAuthenticationToken(
+                                     userId, null, authorities
+                             );
+
+                     auth.setDetails(
+                             new org.springframework.security.web.authentication.WebAuthenticationDetailsSource()
+                                     .buildDetails(request)
+                     );
+                     org.springframework.security.core.context.SecurityContextHolder.getContext()
+                             .setAuthentication(auth);
+                     System.out.println("AUTH SET SUCCESSFULLY");
+                 }
             }catch (Exception e){
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 return;

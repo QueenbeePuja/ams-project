@@ -49,13 +49,16 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/login","/api/register").permitAll()
                         .requestMatchers("/timetable/**").permitAll()
-                        .requestMatchers("/api/admin/**").hasRole("Admin")
-                        .requestMatchers("/api/faculty/**").hasRole("Faculty")
-                        .requestMatchers("/api/student/**").hasAnyRole("Student","Faculty")
+                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/api/faculty/**").hasRole("FACULTY")
+                        .requestMatchers("/api/student/**").hasAnyRole("STUDENT","FACULTY")
 
                         .requestMatchers("/subjects/**").permitAll()
                         .requestMatchers("/faculty/**").permitAll()
-                        .anyRequest().authenticated()  // 🔥 Enables all protection
+                        .requestMatchers("/api/attendance/start-session").hasRole("FACULTY")
+                        .requestMatchers("/api/attendance/scan").permitAll()
+                        .requestMatchers("/api/attendance/end-session").hasRole("FACULTY")
+                        .anyRequest().authenticated() // 🔥 Enables all protection
                 )
                 .formLogin(form -> form.disable())
                 .httpBasic(httpBasic -> httpBasic.disable());

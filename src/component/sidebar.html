@@ -1,22 +1,41 @@
-<div class="left-page w-64 flex flex-col h-full">
+<div
+  id="sidebarMenu"
+  style="
+    width: 250px;
+    height: 100vh;
+    background: #283618;
+    color: white;
+    transition: left 0.3s ease;
+    z-index: 50;
+  "
+>
   <div
-    class="top-left-user-content flex-[3] bg-[#606c38] p-4 text-white flex flex-col"
+    class="top-left-user-content flex-[3] bg-[#606c38] p-4 text-white flex flex-col items-center"
   >
     <img
-      src="../assets/profilepic_demo.jpg"
-      class="w-32 h-32 rounded-full object-cover border-4 border-[#283618] self-center mb-1"
+      src="../assets/default-profile-picture1.jpg"
+      class="w-24 h-24 md:w-28 md:h-28 rounded-full object-cover border-4 border-[#283618] self-center mb-2"
     />
 
     <!-- Name -->
-    <div class="text-xl font-semibold text-center tracking-wider">PUJA</div>
+    <div
+      id="userName"
+      class="text-lg md:text-xl font-semibold text-white tracking-wide"
+    >
+      UNKNOWN
+    </div>
 
     <!-- College Email -->
-    <div class="text-sm text-center opacity-80">puja@college.edu</div>
+    <div id="userEmail" class="text-sm text-gray-300 mt-1">
+      Name@college.edu
+    </div>
 
     <!-- Bottom row -->
-    <div class="flex justify-between text-sm opacity-80 mt-1">
-      <div>24223070</div>
-      <div>MCA</div>
+    <div
+      class="flex justify-between text-sm text-gray-300 opacity-80 mt-2 w-full px-2 self-stretch"
+    >
+      <div id="userId">24223070</div>
+      <div id="userDept">MCA</div>
     </div>
   </div>
   <div

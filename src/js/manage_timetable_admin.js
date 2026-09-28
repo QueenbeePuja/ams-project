@@ -150,7 +150,7 @@ document.addEventListener("change", function (e) {
       const time = slots[slotIndex];
 
       facultySelect.innerHTML = `<option value="">Faculty</option>`;
-      fetch(`http://localhost:8081/timetable/conflicts?day=${day}&time=${time}`)
+      apiFetch(`/timetable/conflicts?day=${day}&time=${time}`)
         .then((res) => res.json())
         .then((usedFaculty) => {
           facultySelect.innerHTML = `<option value="">Faculty</option>`;
@@ -223,7 +223,7 @@ document
       timetable: timetableData,
     };
     console.log("PAYLOAD:", payload);
-    fetch("http://localhost:8081/timetable", {
+    apiFetch("/timetable", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -291,7 +291,7 @@ document
 
     if (!semester) return;
 
-    fetch(`http://localhost:8081/subjects/${semester}`)
+    apiFetch(`/subjects/${semester}`)
       .then((res) => res.json())
       .then((data) => {
         updateSubjectDropdowns(data);
@@ -300,7 +300,7 @@ document
         console.error("Error fetching subjects:", err);
       });
   });
-fetch("http://localhost:8081/faculty")
+apiFetch("/faculty")
   .then((res) => res.json())
   .then((data) => {
     console.log("FACULTY:", data); // debug

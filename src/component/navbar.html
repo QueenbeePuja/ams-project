@@ -1,13 +1,18 @@
 <div
-  class="nav-bar h-16 bg-[#283618] flex items-center justify-between px-12 text-white shadow-md"
+  class="nav-bar h-16 bg-[#283618] flex items-center justify-between px-4 md:px-6 text-white shadow-md"
 >
   <div
     class="p-2 hover:bg-[#606c38] rounded cursor-pointer border-2 border-[#606c38] text-center"
   >
-    Today
+    <button onclick="toggleSidebar()" class="md:hidden mr-3">☰</button>
+  </div>
+  <div
+    class="p-2 hover:bg-[#606c38] rounded cursor-pointer border-2 border-[#606c38] text-center"
+  >
+    <button onclick="goToToday()">Today</button>
   </div>
 
-  <div class="flex gap-6 items-center">
+  <div class="flex gap-3 md:gap-6 items-center">
     <div
       class="relative p-2 hover:bg-[#606c38] rounded cursor-pointer border-2 border-[#606c38] flex items-center justify-center"
     >

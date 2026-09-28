@@ -1,10 +1,12 @@
-const startBtn = document.getElementById("startAttendance");
-const sessionPanel = document.getElementById("attendanceSession");
-
 document.addEventListener("DOMContentLoaded", () => {
   autofillDetails();
   loadStudents();
+
+  const startBtn = document.getElementById("startAttendance");
+
+  startBtn.addEventListener("click", startSession);
 });
+const sessionPanel = document.getElementById("attendanceSession");
 
 function autofillDetails() {
   const cls = JSON.parse(localStorage.getItem("selectedClass"));
@@ -32,14 +34,11 @@ async function loadStudents() {
 
   const token = localStorage.getItem("token");
 
-  const res = await fetch(
-    `http://localhost:8081/api/student/semester/${semester}`,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+  const res = await apiFetch(`api/student/semester/${semester}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
     },
-  );
+  });
   const students = await res.json();
 
   renderStudents(students);
@@ -66,4 +65,116 @@ function renderStudents(students) {
 
     container.appendChild(row);
   });
+}
+
+async function startSession() {
+  const cls = JSON.parse(localStorage.getItem("selectedClass"));
+  const subjectId = cls.subject.id;
+
+  const token = localStorage.getItem("token");
+
+  const res = await apiFetch(
+    `/api/attendance/start-session?subjectId=${subjectId}`,
+    {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    },
+  );
+  if (!res.ok) {
+    alert("Failed to start session");
+    return;
+  }
+
+  const data = await res.json();
+
+  console.log("Session:", data);
+
+  // show session panel
+  sessionPanel.classList.remove("hidden");
+
+  // generate QR
+  window.currentSessionId = data.sessionId;
+  generateQRCode(data.sessionId);
+
+  //show count
+  startLiveCount(data.sessionId);
+
+  // start timer
+  startTimer(120); // 2 minutes
+}
+function generateQRCode(sessionId) {
+  const qrBox = document.getElementById("qrBox");
+
+  qrBox.innerHTML = ""; // clear old QR
+
+  new QRCode(qrBox, {
+    text: sessionId,
+    width: 200,
+    height: 200,
+  });
+}
+function startTimer(seconds) {
+  const timerEl = document.getElementById("timer");
+
+  let time = seconds;
+
+  const interval = setInterval(() => {
+    timerEl.innerText = time;
+    time--;
+
+    if (time < 0) {
+      clearInterval(interval);
+      alert("Session ended. Marking absentees...");
+
+      endSession();
+    }
+  }, 1000);
+}
+async function endSession() {
+  const sessionId = window.currentSessionId;
+  const token = localStorage.getItem("token");
+
+  const res = await apiFetch(
+    `/api/attendance/end-session?sessionId=${sessionId}`,
+    {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    },
+  );
+
+  const text = await res.text();
+
+  sessionEnded = true; // 🔥 IMPORTANT
+
+  alert(text);
+}
+
+let sessionEnded = false;
+
+function startLiveCount(sessionId) {
+  const interval = setInterval(async () => {
+    try {
+      const res = await apiFetch(
+        `/api/attendance/count?sessionId=${sessionId}`,
+      );
+      const data = await res.json();
+
+      const el = document.getElementById("presentCount");
+
+      if (!sessionEnded) {
+        // 🔥 DURING SESSION
+        el.innerText = `${data.present}`;
+      } else {
+        // 🔥 AFTER SESSION
+        el.innerText = `${data.present} / ${data.total}`;
+        clearInterval(interval); // stop polling
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  }, 3000);
 }
