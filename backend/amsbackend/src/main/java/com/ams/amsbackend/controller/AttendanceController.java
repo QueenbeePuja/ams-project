@@ -71,50 +71,57 @@ public class AttendanceController {
     }
 
     @PostMapping("/scan")
-    public ResponseEntity<?> scanAttendance(@RequestParam Long studentId, @RequestParam String sessionId ){
+    public ResponseEntity<?> scanAttendance(@RequestParam String sessionId,
+                                            org.springframework.security.core.Authentication authentication) {
 
-        //finding session
+        // Student identity comes from the JWT, never from the request
+        Student student = studentRepository.findByUserId(authentication.getName()).orElse(null);
+        if (student == null) {
+            return ResponseEntity.status(403).body("Only students can mark attendance");
+        }
+
+        // find session
         AttendanceSession session = attendanceSessionRepository
                 .findById(sessionId)
                 .orElse(null);
-        if(session == null){
+        if (session == null) {
             return ResponseEntity.badRequest().body("Invalid session");
         }
-        //check expiry
-        if(session.getExpiryTime().isBefore(java.time.LocalTime.now())){
+
+        // check expiry
+        if (session.getExpiryTime().isBefore(java.time.LocalTime.now())) {
             return ResponseEntity.badRequest().body("Session expired");
         }
-        //fetch student and subject
-        Student student = studentRepository.findById(studentId).orElse(null);
-        Subject subject = subjectRepository.findById(session.getSubjectId()).orElse(null);
 
-        if(student == null || subject == null){
+        Subject subject = subjectRepository.findById(session.getSubjectId()).orElse(null);
+        if (subject == null) {
             return ResponseEntity.badRequest().body("Invalid data");
         }
 
-        //check duplicates
+        // student must belong to the semester this subject is taught in
+        if (student.getCurrentSemester() != subject.getSemester()) {
+            return ResponseEntity.status(403).body("This class is not for your semester");
+        }
+
+        // check duplicates
         boolean exist = attendanceRepository
-                .existsByStudentAndSubjectAndDate(
-                        student,
-                        subject,
-                        session.getDate()
-                );
-        if(exist){
+                .existsByStudentAndSubjectAndDate(student, subject, session.getDate());
+        if (exist) {
             return ResponseEntity.badRequest().body("Already marked");
         }
 
-        //save attendance
+        // save attendance
         Attendance attendance = new Attendance();
         attendance.setStudent(student);
         attendance.setSubject(subject);
         attendance.setDate(session.getDate());
         attendance.setStatus(Attendance.AttendanceStatus.PRESENT);
         attendance.setSessionId(sessionId);
-
         attendanceRepository.save(attendance);
 
         return ResponseEntity.ok("Attendance marked via QR");
     }
+
     @PostMapping("/end-session")
     public ResponseEntity<?> endSession(@RequestParam String sessionId ){
         AttendanceSession session = attendanceSessionRepository

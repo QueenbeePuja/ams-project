@@ -56,7 +56,7 @@ public class SecurityConfig {
                         .requestMatchers("/subjects/**").permitAll()
                         .requestMatchers("/faculty/**").permitAll()
                         .requestMatchers("/api/attendance/start-session").hasRole("FACULTY")
-                        .requestMatchers("/api/attendance/scan").permitAll()
+                        .requestMatchers("/api/attendance/scan").hasRole("STUDENT")
                         .requestMatchers("/api/attendance/end-session").hasRole("FACULTY")
                         .anyRequest().authenticated() // 🔥 Enables all protection
                 )

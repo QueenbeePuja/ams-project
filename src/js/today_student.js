@@ -184,65 +184,108 @@ function getColor(percentage, display) {
   if (percentage >= 75) return "white";
   return "white";
 }
-function startScanner() {
+
+let html5QrCode = null;
+let scannerStarting = false;
+
+async function stopScanner() {
+  if (html5QrCode) {
+    try {
+      await html5QrCode.stop();
+    } catch (e) {}
+    try {
+      html5QrCode.clear();
+    } catch (e) {}
+    html5QrCode = null;
+  }
+}
+
+async function startScanner() {
+  if (scannerStarting) return; // ignore double taps
+  scannerStarting = true;
+
   const scannerSection = document.getElementById("scannerSection");
   scannerSection.classList.remove("hidden");
 
   const resultEl = document.getElementById("scanResult");
   resultEl.innerText = "📷 Opening camera...";
 
-  const html5QrCode = new Html5Qrcode("reader");
+  await stopScanner(); // release any earlier scanner first
+  html5QrCode = new Html5Qrcode("reader");
 
-  let scanned = false;
+  const config = {
+    fps: 10,
+    qrbox: (w, h) => {
+      const size = Math.floor(Math.min(w, h) * 0.7);
+      return { width: size, height: size };
+    },
+  };
 
-  Html5Qrcode.getCameras()
-    .then((devices) => {
-      if (devices && devices.length) {
-        const cameraId = devices[devices.length - 1].id;
+  let handled = false;
+  const onScan = async (decodedText) => {
+    if (handled) return;
+    handled = true;
 
-        resultEl.innerText = "📷 Scanning QR...";
+    await stopScanner();
 
-        html5QrCode.start(cameraId, { fps: 10, qrbox: 250 }, (decodedText) => {
-          if (scanned) return;
-          scanned = true;
+    console.log("QR DATA:", decodedText);
 
-          html5QrCode.stop();
+    let sessionId = decodedText;
 
-          console.log("QR DATA:", decodedText);
-
-          let sessionId = decodedText;
-
-          if (decodedText.includes("http")) {
-            try {
-              const url = new URL(decodedText);
-              sessionId = url.searchParams.get("sessionId");
-            } catch (e) {
-              console.error("QR parse error:", e);
-            }
-          }
-
-          if (!sessionId) {
-            resultEl.innerText = "❌ Invalid QR";
-            return;
-          }
-
-          sendAttendance(sessionId);
-        });
-      } else {
-        resultEl.innerText = "❌ No camera found";
+    if (decodedText.includes("http")) {
+      try {
+        const url = new URL(decodedText);
+        sessionId = url.searchParams.get("sessionId");
+      } catch (e) {
+        console.error("QR parse error:", e);
       }
-    })
-    .catch((err) => {
-      console.error(err);
-      resultEl.innerText = "❌ Camera access denied";
-    });
+    }
+
+    if (!sessionId) {
+      resultEl.innerText = "❌ Invalid QR";
+      return;
+    }
+
+    sendAttendance(sessionId);
+  };
+
+  try {
+    try {
+      // first try: rear camera
+      await html5QrCode.start({ facingMode: "environment" }, config, onScan);
+    } catch (firstErr) {
+      console.warn("facingMode failed, trying each camera:", firstErr);
+
+      // fallback: try every camera the phone reports
+      const cameras = await Html5Qrcode.getCameras();
+      let started = false;
+      for (const cam of cameras) {
+        try {
+          await html5QrCode.start(cam.id, config, onScan);
+          started = true;
+          break;
+        } catch (e) {
+          console.warn("Camera failed:", cam.label, e);
+        }
+      }
+      if (!started) throw firstErr;
+    }
+    resultEl.innerText = "📷 Scanning QR...";
+  } catch (err) {
+    console.error(err);
+    resultEl.innerText =
+      "❌ Camera error: " +
+      err +
+      " — close other apps/tabs using the camera and try again.";
+    await stopScanner();
+  } finally {
+    scannerStarting = false;
+  }
 }
 //Send Attendance
 async function sendAttendance(scannedSessionId) {
-  const studentId = localStorage.getItem("studentId");
-  alert("Student ID: " + studentId);
   const res = await apiFetch(
-    `/api/attendance/scan?studentId=${studentId}&sessionId=${scannedSessionId}`,
+    `/api/attendance/scan?sessionId=${encodeURIComponent(scannedSessionId)}`,
     {
       method: "POST",
     },
