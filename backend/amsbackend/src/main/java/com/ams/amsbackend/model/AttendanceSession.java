@@ -41,6 +41,15 @@ public class AttendanceSession {
     public LocalTime getExpiryTime() {
         return expiryTime;
     }
+    @com.fasterxml.jackson.annotation.JsonIgnore
+    private String secret;
+
+    public String getSecret(){
+        return secret;
+    }
+    public void setSecret(String secret){
+        this.secret = secret;
+    }
 
     public void setExpiryTime(LocalTime expiryTime) {
         this.expiryTime = expiryTime;

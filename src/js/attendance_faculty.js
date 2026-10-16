@@ -96,7 +96,7 @@ async function startSession() {
 
   // generate QR
   window.currentSessionId = data.sessionId;
-  generateQRCode(data.sessionId);
+  startQrRotation(data.sessionId);
 
   //show count
   startLiveCount(data.sessionId);
@@ -104,13 +104,48 @@ async function startSession() {
   // start timer
   startTimer(120); // 2 minutes
 }
-function generateQRCode(sessionId) {
+let qrInterval = null;
+let lastQrText = "";
+
+async function refreshQr(sessionId) {
+  try {
+    const token = localStorage.getItem("token");
+    const res = await apiFetch(
+      `/api/attendance/qr-token?sessionId=${encodeURIComponent(sessionId)}`,
+      { headers: { Authorization: `Bearer ${token}` } },
+    );
+    if (!res.ok) return;
+
+    const qrToken = (await res.text()).trim();
+    const text = `${sessionId}.${qrToken}`;
+
+    if (text !== lastQrText) {
+      lastQrText = text;
+      generateQRCode(text); // only redraw when the token changed
+    }
+  } catch (err) {
+    console.error("QR refresh failed:", err);
+  }
+}
+
+function startQrRotation(sessionId) {
+  stopQrRotation();
+  lastQrText = "";
+  refreshQr(sessionId);
+  qrInterval = setInterval(() => refreshQr(sessionId), 3000);
+}
+
+function stopQrRotation() {
+  if (qrInterval) clearInterval(qrInterval);
+  qrInterval = null;
+}
+function generateQRCode(qrText) {
   const qrBox = document.getElementById("qrBox");
 
   qrBox.innerHTML = ""; // clear old QR
 
   new QRCode(qrBox, {
-    text: sessionId,
+    text: qrText,
     width: 200,
     height: 200,
   });
@@ -132,6 +167,9 @@ function startTimer(seconds) {
     }
   }, 1000);
 }
+stopQrRotation();
+document.getElementById("qrBox").innerHTML = ""; // remove the QR when the session ends
+
 async function endSession() {
   const sessionId = window.currentSessionId;
   const token = localStorage.getItem("token");

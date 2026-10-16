@@ -12,10 +12,15 @@ import com.ams.amsbackend.repository.SubjectRepository;
 import com.ams.amsbackend.service.AttendanceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import com.ams.amsbackend.service.QrTokenService;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -31,6 +36,8 @@ public class AttendanceController {
     private SubjectRepository subjectRepository;
     @Autowired
     private AttendanceService attendanceService;
+    @Autowired
+    private QrTokenService qrTokenService;
 
     @PostMapping("/mark")
     public ResponseEntity<?> markAttendance(@RequestBody List<Attendance> attendanceList){
@@ -53,25 +60,45 @@ public class AttendanceController {
     }
     @PostMapping("/start-session")
     public ResponseEntity<?> startSession(@RequestParam Long subjectId,
-                                          org.springframework.security.core.Authentication authentication){
+                                          Authentication authentication){
 
         String role = authentication.getAuthorities().iterator().next().getAuthority();
         if(!role.equals("ROLE_FACULTY")){
             return ResponseEntity.status(403).body("Only faculty can start session");
         }
-        String sessionId = java.util.UUID.randomUUID().toString();
+        String sessionId = UUID.randomUUID().toString();
         AttendanceSession session = new AttendanceSession();
         session.setSessionId(sessionId);
         session.setSubjectId(subjectId);
-        session.setDate(java.time.LocalDate.now());
-        session.setExpiryTime(java.time.LocalTime.now().plusMinutes(2));
-
+        session.setDate(LocalDate.now());
+        session.setExpiryTime(LocalTime.now().plusMinutes(2));
+        session.setSecret(UUID.randomUUID().toString() + java.util.UUID.randomUUID());
         attendanceSessionRepository.save(session);
         return ResponseEntity.ok(session);
     }
 
+    @GetMapping("/qr-token")
+    public ResponseEntity<?> getQrToken(@RequestParam String sessionId,
+                                        org.springframework.security.core.Authentication authentication) {
+
+        String role = authentication.getAuthorities().iterator().next().getAuthority();
+        if (!role.equals("ROLE_FACULTY")) {
+            return ResponseEntity.status(403).body("Only faculty can get the QR token");
+        }
+
+        AttendanceSession session = attendanceSessionRepository.findById(sessionId).orElse(null);
+        if (session == null || session.getSecret() == null) {
+            return ResponseEntity.badRequest().body("Invalid session");
+        }
+        if (session.getExpiryTime().isBefore(java.time.LocalTime.now())) {
+            return ResponseEntity.badRequest().body("Session expired");
+        }
+
+        return ResponseEntity.ok(qrTokenService.generate(session.getSecret(), sessionId));
+    }
+
     @PostMapping("/scan")
-    public ResponseEntity<?> scanAttendance(@RequestParam String sessionId,
+    public ResponseEntity<?> scanAttendance(@RequestParam String sessionId,@RequestParam String token,
                                             org.springframework.security.core.Authentication authentication) {
 
         // Student identity comes from the JWT, never from the request
@@ -91,6 +118,10 @@ public class AttendanceController {
         // check expiry
         if (session.getExpiryTime().isBefore(java.time.LocalTime.now())) {
             return ResponseEntity.badRequest().body("Session expired");
+        }
+        // the QR must be a live, current one
+        if (!qrTokenService.isValid(session.getSecret(), sessionId, token)) {
+            return ResponseEntity.badRequest().body("QR expired. Scan the live QR on the screen.");
         }
 
         Subject subject = subjectRepository.findById(session.getSubjectId()).orElse(null);

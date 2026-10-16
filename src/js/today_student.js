@@ -230,23 +230,17 @@ async function startScanner() {
 
     console.log("QR DATA:", decodedText);
 
-    let sessionId = decodedText;
+    // QR format: sessionId.token
+    const parts = decodedText.trim().split(".");
+    const sessionId = parts.length === 2 ? parts[0] : null;
+    const token = parts.length === 2 ? parts[1] : null;
 
-    if (decodedText.includes("http")) {
-      try {
-        const url = new URL(decodedText);
-        sessionId = url.searchParams.get("sessionId");
-      } catch (e) {
-        console.error("QR parse error:", e);
-      }
-    }
-
-    if (!sessionId) {
+    if (!sessionId || !token) {
       resultEl.innerText = "❌ Invalid QR";
       return;
     }
 
-    sendAttendance(sessionId);
+    sendAttendance(sessionId, token);
   };
 
   try {
@@ -283,9 +277,9 @@ async function startScanner() {
   }
 }
 //Send Attendance
-async function sendAttendance(scannedSessionId) {
+async function sendAttendance(scannedSessionId, token) {
   const res = await apiFetch(
-    `/api/attendance/scan?sessionId=${encodeURIComponent(scannedSessionId)}`,
+    `/api/attendance/scan?sessionId=${encodeURIComponent(scannedSessionId)}&token=${encodeURIComponent(token)}`,
     {
       method: "POST",
     },
