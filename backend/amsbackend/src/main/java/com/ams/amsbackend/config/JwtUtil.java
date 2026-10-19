@@ -3,12 +3,14 @@ package com.ams.amsbackend.config;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.util.Date;
 
 @Component
 public class JwtUtil {
-    private final String SECRET = "ams_secret_key";
+    @Value("${ams.jwt.secret}")
+    private String SECRET;
 
     public String generateToken(String userId, String role)
     {

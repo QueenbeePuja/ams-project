@@ -23,7 +23,7 @@ public class JwtFilter extends OncePerRequestFilter {
                                     response, FilterChain filterChain)
             throws ServletException, IOException {
         String path = request.getRequestURI();
-        if (path.contains("/api/login") || path.contains("/timetable")) {
+        if (path.contains("/api/login")){
             filterChain.doFilter(request, response);
             return;
         }

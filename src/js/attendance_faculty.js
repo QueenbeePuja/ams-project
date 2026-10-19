@@ -34,7 +34,7 @@ async function loadStudents() {
 
   const token = localStorage.getItem("token");
 
-  const res = await apiFetch(`api/student/semester/${semester}`, {
+  const res = await apiFetch(`/api/student/semester/${semester}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -58,10 +58,12 @@ function renderStudents(students) {
 
     row.className = "flex justify-between p-3 border rounded-lg bg-white";
 
-    row.innerHTML = `
-      <span>${s.fullName}</span>
-      <input type="checkbox" data-id="${s.id}" />
-    `;
+    const name = document.createElement("span");
+    name.textContent = s.fullName;
+    const box = document.createElement("input");
+    box.type = "checkbox";
+    box.dataset.id = s.id;
+    row.append(name, box);
 
     container.appendChild(row);
   });

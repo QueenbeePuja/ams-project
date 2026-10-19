@@ -47,8 +47,10 @@ public class SecurityConfig {
                         )
                 )
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/login","/api/register").permitAll()
-                        .requestMatchers("/timetable/**").permitAll()
+                        .requestMatchers("/api/login").permitAll()
+                        .requestMatchers("/api/register").hasRole("ADMIN")
+                        .requestMatchers(org.springframework.http.HttpMethod.POST, "/timetable/**").hasRole("ADMIN")
+                        .requestMatchers("/timetable/**").authenticated()
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .requestMatchers("/api/faculty/**").hasRole("FACULTY")
                         .requestMatchers("/api/student/**").hasAnyRole("STUDENT","FACULTY")

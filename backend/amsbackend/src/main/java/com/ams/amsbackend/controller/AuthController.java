@@ -180,14 +180,22 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public String register(@RequestBody User user) {
-
-        System.out.println("REGISTER API HIT"); // 👈 ADD THIS
+    public ResponseEntity<?> register(@RequestBody User user) {
+        if (user.getUserId() == null || user.getUserId().isBlank()
+                || user.getPassword() == null || user.getPassword().length() < 6) {
+            return ResponseEntity.badRequest().body("User ID and a password of at least 6 characters are required");
+        }
+        if (user.getRole() == null || !List.of("Admin", "Faculty", "Student").contains(user.getRole())) {
+            return ResponseEntity.badRequest().body("Role must be Admin, Faculty or Student");
+        }
+        if (userRepository.findByUserId(user.getUserId()).isPresent()) {
+            return ResponseEntity.status(409).body("User ID already exists");
+        }
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
 
-        return "User Registered Successfully";
+        return ResponseEntity.ok("User Registered Successfully");
     }
 
 }
