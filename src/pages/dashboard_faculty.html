@@ -6,16 +6,20 @@
     <link rel="stylesheet" href="../css/output.css" />
     <script src="https://unpkg.com/feather-icons"></script>
     <title>Dashboard</title>
-    <script src="/src/js/common.js"></script>
+
+    <script>
+      (function () {
+        var role = (localStorage.getItem("role") || "").toUpperCase();
+        if (role !== "FACULTY") {
+          window.location.href = "login.html";
+        }
+      })();
+    </script>
   </head>
 
   <body class="m-0 bg-[#fefae0]">
-    <script>
-      checkAuth("Faculty");
-    </script>
-
     <div class="flex flex-col min-h-screen">
-      <!-- ✅ NAVBAR -->
+      <!-- ✅ NAVBAR FULL WIDTH -->
       <div id="navbar"></div>
 
       <!-- ✅ SIDEBAR + CONTENT -->
@@ -24,112 +28,14 @@
         <div id="sidebar"></div>
 
         <!-- MAIN CONTENT -->
-        <div class="main-body-content flex-1 bg-[#fefae0] p-4 overflow-y-auto">
-          <!-- TOP STATS -->
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div
-              class="bg-white p-6 rounded-2xl shadow-md hover:shadow-lg transition"
-            >
-              <h3 class="text-sm text-gray-500">Today's Classes</h3>
-              <div class="text-4xl font-bold mt-2 text-[#283618]">3</div>
-              <p class="text-sm text-gray-500 mt-1">Scheduled today</p>
-            </div>
-
-            <div
-              class="bg-white p-6 rounded-2xl shadow-md hover:shadow-lg transition"
-            >
-              <h3 class="text-sm text-gray-500">Pending Attendance</h3>
-              <div class="text-4xl font-bold mt-2 text-[#283618]">1</div>
-              <p class="text-sm text-gray-500 mt-1">Classes not submitted</p>
-            </div>
-
-            <div
-              class="bg-white p-6 rounded-2xl shadow-md hover:shadow-lg transition"
-            >
-              <h3 class="text-sm text-gray-500">Total Students</h3>
-              <div class="text-4xl font-bold mt-2 text-[#283618]">120</div>
-              <p class="text-sm text-gray-500 mt-1">Across all classes</p>
-            </div>
-
-            <!-- SUBJECTS -->
-            <div class="bg-white p-6 rounded-2xl shadow-md">
-              <h2 class="text-lg font-semibold text-gray-700 mb-4">
-                Subjects Teaching
+        <div class="main-body-content flex-1 min-w-0 bg-[#fefae0] p-4">
+          <div class="flex flex-col gap-6">
+            <!-- DASHBOARD CONTENT: we build this one block at a time -->
+            <div class="bg-white p-6 shadow rounded">
+              <h2 class="text-lg font-semibold text-gray-700 tracking-wide">
+                DASHBOARD
               </h2>
-
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div class="bg-[#e9f5db] p-4 rounded-lg">
-                  <p class="font-semibold text-[#283618]">Data Mining</p>
-                  <p class="text-sm text-gray-500">CS501</p>
-                </div>
-
-                <div class="bg-[#e9f5db] p-4 rounded-lg">
-                  <p class="font-semibold text-[#283618]">Operating Systems</p>
-                  <p class="text-sm text-gray-500">CS502</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- AT-RISK STUDENTS -->
-          <div class="mt-6 bg-white p-6 rounded-2xl shadow-md">
-            <!-- HEADER -->
-            <div
-              class="flex flex-col md:flex-row md:justify-between md:items-center gap-3 mb-4"
-            >
-              <h2
-                class="text-lg font-semibold text-gray-700 flex items-center gap-2"
-              >
-                🚨 At-Risk Students
-              </h2>
-
-              <select class="border rounded-lg p-2 text-sm">
-                <option>Select Subject</option>
-                <option>CS501 - Data Mining</option>
-                <option>CS502 - Operating Systems</option>
-              </select>
-            </div>
-
-            <!-- TABLE HEADER -->
-            <div
-              class="grid grid-cols-3 text-sm font-semibold text-gray-500 border-b pb-2"
-            >
-              <div>Student Name</div>
-              <div class="text-center">Attendance</div>
-              <div class="text-right">Status</div>
-            </div>
-
-            <!-- ROWS -->
-            <div class="space-y-2 mt-3">
-              <div
-                class="grid grid-cols-3 items-center bg-[#fefae0] p-3 rounded-lg"
-              >
-                <div class="font-medium text-gray-700">Rahul Sharma</div>
-                <div class="text-center text-red-600 font-semibold">64%</div>
-                <div class="text-right text-red-600 font-semibold">
-                  Critical
-                </div>
-              </div>
-
-              <div
-                class="grid grid-cols-3 items-center bg-[#fefae0] p-3 rounded-lg"
-              >
-                <div class="font-medium text-gray-700">Aditi Singh</div>
-                <div class="text-center text-yellow-600 font-semibold">72%</div>
-                <div class="text-right text-yellow-600 font-semibold">
-                  Warning
-                </div>
-              </div>
-
-              <div
-                class="grid grid-cols-3 items-center bg-[#fefae0] p-3 rounded-lg"
-              >
-                <div class="font-medium text-gray-700">Aman Verma</div>
-                <div class="text-center text-red-600 font-semibold">58%</div>
-                <div class="text-right text-red-600 font-semibold">
-                  Critical
-                </div>
-              </div>
+              <p class="text-sm text-gray-500 mt-2">Content coming soon.</p>
             </div>
           </div>
         </div>
@@ -139,10 +45,12 @@
     <script>
       feather.replace();
     </script>
-
+    <script src="../js/common.js"></script>
     <script src="../js/layout.js"></script>
+    <!-- page script goes here when we add content, e.g.
+    <script src="../js/dashboard_student.js"></script> -->
 
-    <!-- ✅ OVERLAY -->
+    <!-- ✅ OVERLAY (REQUIRED FOR MOBILE SIDEBAR) -->
     <div
       id="overlay"
       style="

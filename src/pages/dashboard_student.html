@@ -6,69 +6,36 @@
     <link rel="stylesheet" href="../css/output.css" />
     <script src="https://unpkg.com/feather-icons"></script>
     <title>Dashboard</title>
-    <script src="../js/common.js"></script>
+
+    <script>
+      (function () {
+        var role = (localStorage.getItem("role") || "").toUpperCase();
+        if (role !== "STUDENT") {
+          window.location.href = "login.html";
+        }
+      })();
+    </script>
   </head>
 
   <body class="m-0 bg-[#fefae0]">
-    <script>
-      checkAuth("Student");
-    </script>
-
     <div class="flex flex-col min-h-screen">
-      <!-- NAVBAR -->
+      <!-- ✅ NAVBAR FULL WIDTH -->
       <div id="navbar"></div>
 
-      <!-- SIDEBAR + CONTENT -->
+      <!-- ✅ SIDEBAR + CONTENT -->
       <div class="flex flex-1 relative">
         <!-- SIDEBAR -->
         <div id="sidebar"></div>
 
         <!-- MAIN CONTENT -->
-        <div class="main-body-content flex-1 bg-[#fefae0] p-6 overflow-y-auto">
+        <div class="main-body-content flex-1 min-w-0 bg-[#fefae0] p-4">
           <div class="flex flex-col gap-6">
-            <!-- TOP CARDS -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <!-- OVERALL ATTENDANCE -->
-              <div
-                class="bg-white p-6 rounded-2xl shadow-md hover:shadow-lg transition"
-              >
-                <h3 class="text-sm text-gray-500">Overall Attendance</h3>
-
-                <div
-                  id="overallPercent"
-                  class="text-4xl font-bold mt-2 text-[#283618]"
-                >
-                  --
-                </div>
-
-                <p id="overallBuffer" class="text-sm mt-2 font-semibold">
-                  Calculating...
-                </p>
-              </div>
-
-              <!-- CLASSES ATTENDED -->
-              <div
-                class="bg-white p-6 rounded-2xl shadow-md hover:shadow-lg transition"
-              >
-                <h3 class="text-sm text-gray-500">Classes Attended</h3>
-
-                <div class="text-4xl font-bold mt-2 text-[#283618]">
-                  84 / 102
-                </div>
-
-                <p class="text-sm text-gray-500 mt-1">This semester</p>
-              </div>
-            </div>
-
-            <!-- SUBJECT SAFETY -->
-            <div class="bg-white p-6 rounded-2xl shadow-md">
-              <h2 class="text-lg font-semibold text-gray-700 mb-4">
-                Attendance Safety (Subject-wise)
+            <!-- DASHBOARD CONTENT: we build this one block at a time -->
+            <div class="bg-white p-6 shadow rounded">
+              <h2 class="text-lg font-semibold text-gray-700 tracking-wide">
+                DASHBOARD
               </h2>
-
-              <div id="subjectBufferList" class="space-y-3">
-                <!-- dynamic -->
-              </div>
+              <p class="text-sm text-gray-500 mt-2">Content coming soon.</p>
             </div>
           </div>
         </div>
@@ -78,11 +45,12 @@
     <script>
       feather.replace();
     </script>
-
+    <script src="../js/common.js"></script>
     <script src="../js/layout.js"></script>
-    <script src="../js/dashboard_student.js"></script>
+    <!-- page script goes here when we add content, e.g.
+    <script src="../js/dashboard_student.js"></script> -->
 
-    <!-- OVERLAY -->
+    <!-- ✅ OVERLAY (REQUIRED FOR MOBILE SIDEBAR) -->
     <div
       id="overlay"
       style="
