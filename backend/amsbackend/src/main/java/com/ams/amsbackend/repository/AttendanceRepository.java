@@ -16,19 +16,38 @@ public interface AttendanceRepository extends JpaRepository<Attendance, Long> {
     long countBySessionId(String sessionId);
 
     @Query("""
-SELECT 
+SELECT
     s.id as subjectId,
     s.name as subjectName,
     SUM(CASE WHEN a.status = 'PRESENT' THEN 1 ELSE 0 END) as presentCount,
     COUNT(a.id) as totalCount
 FROM Subject s
-LEFT JOIN Attendance a 
-    ON a.subject.id = s.id 
+LEFT JOIN Attendance a
+    ON a.subject.id = s.id
     AND a.student.id = :studentId
 WHERE s.semester = :semester
 GROUP BY s.id, s.name
 """)
     List<AttendancePercentageProjection> getAttendanceStats(
+            @Param("studentId") Long studentId,
+            @Param("semester") int semester);
+
+    @Query("""
+SELECT
+    s.id as subjectId,
+    s.name as subjectName,
+    s.code as subjectCode,
+    SUM(CASE WHEN a.status = 'PRESENT' THEN 1 ELSE 0 END) as presentCount,
+    COUNT(a.id) as totalCount
+FROM Subject s
+LEFT JOIN Attendance a
+    ON a.subject.id = s.id
+    AND a.student.id = :studentId
+WHERE s.semester = :semester
+GROUP BY s.id, s.name, s.code
+ORDER BY s.name
+""")
+    List<SubjectStatsProjection> getSubjectStats(
             @Param("studentId") Long studentId,
             @Param("semester") int semester);
 }

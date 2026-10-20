@@ -46,6 +46,21 @@ async function initLayout() {
     sidebar.style.left = "-250px";
     overlay.style.display = "none";
   });
+  let lastMobile = window.innerWidth < 768;
+  window.addEventListener("resize", () => {
+    const nowMobile = window.innerWidth < 768;
+    if (nowMobile === lastMobile) return;
+    lastMobile = nowMobile;
+
+    if (nowMobile) {
+      sidebar.style.position = "fixed";
+      sidebar.style.left = "-250px";
+    } else {
+      sidebar.style.position = "static";
+      sidebar.style.left = "0px";
+    }
+    overlay.style.display = "none";
+  });
 }
 
 function loadSidebarMenu() {
