@@ -1,3 +1,19 @@
+(function injectLayoutStyles() {
+  const style = document.createElement("style");
+  style.textContent = `
+    @media (min-width: 768px) {
+      #sidebar {
+        position: sticky !important;
+        top: 0;
+        align-self: flex-start;
+        height: 100vh;
+        overflow-y: auto;
+        flex-shrink: 0;
+      }
+    }
+  `;
+  document.head.appendChild(style);
+})();
 async function loadComponent(elementId, filePath) {
   const res = await fetch(filePath);
   const html = await res.text();

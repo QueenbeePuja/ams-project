@@ -31,11 +31,106 @@
         <div class="main-body-content flex-1 min-w-0 bg-[#fefae0] p-4">
           <div class="flex flex-col gap-6">
             <!-- DASHBOARD CONTENT: we build this one block at a time -->
-            <div class="bg-white p-6 shadow rounded">
-              <h2 class="text-lg font-semibold text-gray-700 tracking-wide">
-                DASHBOARD
-              </h2>
-              <p class="text-sm text-gray-500 mt-2">Content coming soon.</p>
+            <div class="space-y-4">
+              <!-- Stat tiles -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+                <div class="bg-white rounded-xl shadow p-4">
+                  <p class="text-xs font-semibold tracking-wide text-gray-500">
+                    OVERALL ATTENDANCE
+                  </p>
+                  <div class="flex items-center justify-between mt-2">
+                    <p
+                      id="overallPercent"
+                      class="text-4xl font-bold text-[#283618]"
+                    >
+                      --%
+                    </p>
+                    <span
+                      id="overallBadge"
+                      class="px-3 py-1 rounded-full text-xs font-semibold bg-gray-200 text-gray-600"
+                      >Loading</span
+                    >
+                  </div>
+                  <p id="overallMessage" class="text-sm text-gray-700 mt-2"></p>
+                </div>
+
+                <div class="bg-white rounded-xl shadow p-4">
+                  <p class="text-xs font-semibold tracking-wide text-gray-500">
+                    CLASSES ATTENDED
+                  </p>
+                  <p
+                    id="statAttended"
+                    class="text-4xl font-bold text-[#283618] mt-2"
+                  >
+                    --
+                  </p>
+                  <p id="overallCounts" class="text-sm text-gray-500 mt-2"></p>
+                </div>
+
+                <div class="bg-white rounded-xl shadow p-4">
+                  <p
+                    id="statMissLabel"
+                    class="text-xs font-semibold tracking-wide text-gray-500"
+                  >
+                    CAN STILL MISS
+                  </p>
+                  <p
+                    id="statMiss"
+                    class="text-4xl font-bold text-[#283618] mt-2"
+                  >
+                    --
+                  </p>
+                  <p id="statMissSub" class="text-sm text-gray-500 mt-2"></p>
+                </div>
+
+                <div class="bg-white rounded-xl shadow p-4">
+                  <p class="text-xs font-semibold tracking-wide text-gray-500">
+                    SUBJECTS AT RISK
+                  </p>
+                  <p
+                    id="statRisk"
+                    class="text-4xl font-bold text-[#283618] mt-2"
+                  >
+                    --
+                  </p>
+                  <p id="statRiskSub" class="text-sm text-gray-500 mt-2"></p>
+                </div>
+              </div>
+
+              <!-- Chart + table -->
+              <div class="grid grid-cols-1 lg:grid-cols-5 gap-4">
+                <div class="bg-white rounded-xl shadow p-4 lg:col-span-3">
+                  <p
+                    class="text-xs font-semibold tracking-wide text-gray-500 mb-3"
+                  >
+                    SUBJECT-WISE ATTENDANCE
+                  </p>
+                  <div class="relative h-72 lg:h-80 w-full">
+                    <canvas id="subjectChart"></canvas>
+                  </div>
+                </div>
+
+                <div class="bg-white rounded-xl shadow p-4 lg:col-span-2">
+                  <p
+                    class="text-xs font-semibold tracking-wide text-gray-500 mb-3"
+                  >
+                    SUBJECT DETAILS
+                  </p>
+                  <div class="overflow-x-auto">
+                    <table class="w-full text-sm min-w-[380px]">
+                      <thead>
+                        <tr class="text-left text-gray-500 border-b">
+                          <th class="py-2 pr-2">Subject</th>
+                          <th class="py-2 pr-2">Attended</th>
+                          <th class="py-2 pr-2">%</th>
+                          <th class="py-2">Status</th>
+                        </tr>
+                      </thead>
+                      <tbody id="subjectRows"></tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -47,6 +142,8 @@
     </script>
     <script src="../js/common.js"></script>
     <script src="../js/layout.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script src="../js/dashboard_student.js"></script>
     <!-- page script goes here when we add content, e.g.
     <script src="../js/dashboard_student.js"></script> -->
 
