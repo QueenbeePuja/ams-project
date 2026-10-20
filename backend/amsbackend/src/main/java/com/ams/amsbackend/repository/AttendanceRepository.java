@@ -50,5 +50,17 @@ ORDER BY s.name
     List<SubjectStatsProjection> getSubjectStats(
             @Param("studentId") Long studentId,
             @Param("semester") int semester);
+
+    @Query("""
+    SELECT a.student.id AS studentId,
+           a.student.userId AS userId,
+           a.student.fullName AS studentName,
+           SUM(CASE WHEN a.status = 'PRESENT' THEN 1 ELSE 0 END) AS presentCount,
+           COUNT(a.id) AS totalCount
+    FROM Attendance a
+    WHERE a.subject.id = :subjectId
+    GROUP BY a.student.id, a.student.userId, a.student.fullName
+    """)
+    List<StudentSubjectProjection> getStudentStatsForSubject(@Param("subjectId") Long subjectId);
 }
 
