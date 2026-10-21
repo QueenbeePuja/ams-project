@@ -90,23 +90,13 @@
                 <h2 class="text-lg font-semibold text-gray-700 mb-4">
                   Announcements
                 </h2>
-
-                <ul class="space-y-3 text-gray-700">
-                  <li class="flex items-start gap-2">
-                    <span>📢</span>
-                    <span>Mid semester exams start from April 5.</span>
-                  </li>
-
-                  <li class="flex items-start gap-2">
-                    <span>📢</span>
-                    <span>Assignment submission deadline March 20.</span>
-                  </li>
-
-                  <li class="flex items-start gap-2">
-                    <span>📢</span>
-                    <span>AI workshop will be conducted this Friday.</span>
-                  </li>
-                </ul>
+                <ul
+                  id="announcementList"
+                  class="space-y-3 max-h-72 overflow-y-auto"
+                ></ul>
+                <p id="announcementEmpty" class="text-sm text-gray-500 hidden">
+                  No announcements yet.
+                </p>
               </div>
             </div>
           </div>
@@ -119,6 +109,7 @@
     </script>
     <script src="../js/layout.js"></script>
     <script src="../js/common.js"></script>
+    <script src="../js/announcements.js"></script>
     <script src="../js/today_student.js"></script>
 
     <!-- OVERLAY -->
