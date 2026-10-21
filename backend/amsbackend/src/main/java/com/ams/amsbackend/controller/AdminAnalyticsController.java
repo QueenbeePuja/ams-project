@@ -18,6 +18,13 @@ public class AdminAnalyticsController {
 
     @Autowired
     private AdminViewService viewService;
+    @Autowired
+    private com.ams.amsbackend.service.AdminTodayService todayService;
+
+    @GetMapping("/today")
+    public TodayStats today() {
+        return todayService.getToday();
+    }
 
     @GetMapping("/filters")
     public Filters filters() {

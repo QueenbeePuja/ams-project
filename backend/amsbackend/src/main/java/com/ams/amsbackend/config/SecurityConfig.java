@@ -63,6 +63,9 @@ public class SecurityConfig {
                         .requestMatchers("/api/faculty/**").hasRole("FACULTY")
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .requestMatchers("/api/attendance/end-session").hasRole("FACULTY")
+                        .requestMatchers(org.springframework.http.HttpMethod.POST, "/api/announcements").hasRole("ADMIN")
+                        .requestMatchers(org.springframework.http.HttpMethod.DELETE, "/api/announcements/**").hasRole("ADMIN")
+                        .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/announcements").authenticated()
                         .anyRequest().authenticated() // 🔥 Enables all protection
                 )
                 .formLogin(form -> form.disable())

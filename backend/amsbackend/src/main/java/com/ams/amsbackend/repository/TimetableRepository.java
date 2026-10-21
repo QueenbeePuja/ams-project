@@ -8,6 +8,7 @@ import java.util.List;
 
 public interface TimetableRepository extends JpaRepository<Timetable, Long> {
 
+    long countByDayIgnoreCaseAndSlotTypeIgnoreCase(String day, String slotType);
     boolean existsByFacultyAndDayAndTimeSlot(
             Faculty faculty,
             String day,

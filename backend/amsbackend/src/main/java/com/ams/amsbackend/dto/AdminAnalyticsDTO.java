@@ -25,4 +25,7 @@ public class AdminAnalyticsDTO {
                              List<String> subjectNames, Double avgPercent, int lowStudents) {}
 
     public record FacultyView(int count, Double avgPercent, int threshold, List<FacultyRow> faculty) {}
+    public record TodayStats(String day, long classesToday, long sessionsStarted,
+                             long attendancePending, long announcementsToday) {}
+
 }

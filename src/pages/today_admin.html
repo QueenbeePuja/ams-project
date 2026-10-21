@@ -8,65 +8,66 @@
     <title>Home</title>
 
     <script>
-      const role = localStorage.getItem("role");
-
-      if (!role || role !== "Admin") {
-        window.location.href = "http://127.0.0.1:5500/src/pages/login.html";
-      }
+      (function () {
+        var role = (localStorage.getItem("role") || "").toUpperCase();
+        if (role !== "ADMIN") {
+          window.location.href = "login.html";
+        }
+      })();
     </script>
   </head>
 
   <body class="m-0 bg-[#fefae0]">
     <div class="flex flex-col min-h-screen">
-      <!-- ✅ NAVBAR -->
+      <!-- NAVBAR -->
       <div id="navbar"></div>
 
-      <!-- ✅ SIDEBAR + CONTENT -->
+      <!-- SIDEBAR + CONTENT -->
       <div class="flex flex-1 relative">
-        <!-- SIDEBAR -->
         <div id="sidebar"></div>
 
         <!-- MAIN CONTENT -->
-        <div class="main-body-content flex-1 bg-[#fefae0] p-4">
+        <div class="main-body-content flex-1 min-w-0 bg-[#fefae0] p-4">
           <div class="flex flex-col gap-6">
             <!-- STATS CARDS -->
-            <div class="grid grid-cols-3 gap-6">
-              <div
-                class="bg-white p-6 rounded-2xl shadow-md hover:shadow-lg transition"
-              >
-                <h3 class="text-sm text-gray-500">Classes Today</h3>
-                <div class="text-3xl font-bold mt-2">4 / 8</div>
-                <p class="text-sm text-gray-500 mt-1">Completed</p>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div class="bg-white p-6 rounded-2xl shadow-md">
+                <h3 class="text-sm text-gray-500">Attendance Taken</h3>
+                <div id="statTaken" class="text-3xl font-bold mt-2">
+                  -- / --
+                </div>
+                <p class="text-sm text-gray-500 mt-1">
+                  sessions started / classes today
+                </p>
               </div>
 
-              <div
-                class="bg-white p-6 rounded-2xl shadow-md hover:shadow-lg transition"
-              >
+              <div class="bg-white p-6 rounded-2xl shadow-md">
                 <h3 class="text-sm text-gray-500">Attendance Pending</h3>
-                <div class="text-3xl font-bold mt-2">4</div>
-                <p class="text-sm text-gray-500 mt-1">Classes remaining</p>
+                <div id="statPending" class="text-3xl font-bold mt-2">--</div>
+                <p class="text-sm text-gray-500 mt-1">
+                  classes with no session yet
+                </p>
               </div>
 
-              <div
-                class="bg-white p-6 rounded-2xl shadow-md hover:shadow-lg transition"
-              >
+              <div class="bg-white p-6 rounded-2xl shadow-md">
                 <h3 class="text-sm text-gray-500">Announcements Today</h3>
-                <div class="text-3xl font-bold mt-2">2</div>
-                <p class="text-sm text-gray-500 mt-1">Posted today</p>
+                <div id="statAnnounce" class="text-3xl font-bold mt-2">--</div>
+                <p class="text-sm text-gray-500 mt-1">posted today</p>
               </div>
             </div>
 
             <!-- LOWER SECTION -->
-            <div class="flex gap-6 flex-wrap">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
               <!-- POST ANNOUNCEMENT -->
-              <div
-                class="w-full max-[900px]:w-full min-[901px]:w-[48%] bg-white p-6 rounded-2xl shadow-md"
-              >
+              <div class="bg-white p-6 rounded-2xl shadow-md">
                 <h2 class="text-lg font-semibold text-gray-700 mb-4">
                   Post Announcement
                 </h2>
 
-                <select class="w-full border rounded-lg p-2 mb-3">
+                <select
+                  id="annAudience"
+                  class="w-full border rounded-lg p-2 mb-3"
+                >
                   <option value="">Select Audience</option>
                   <option value="faculty">Faculty</option>
                   <option value="students">Students</option>
@@ -74,47 +75,42 @@
                 </select>
 
                 <input
+                  id="annTitle"
                   type="text"
+                  maxlength="150"
                   placeholder="Announcement Title"
                   class="w-full border rounded-lg p-2 mb-3"
                 />
 
                 <textarea
+                  id="annMessage"
+                  maxlength="2000"
                   class="w-full border rounded-lg p-3 h-24"
                   placeholder="Write announcement..."
                 ></textarea>
 
                 <button
+                  id="annPost"
                   class="mt-3 bg-[#283618] hover:bg-[#606c38] transition text-white px-4 py-2 rounded-lg"
                 >
                   Post Announcement
                 </button>
+                <p id="annMsg" class="text-sm mt-2"></p>
               </div>
 
               <!-- RECENT ANNOUNCEMENTS -->
-              <div
-                class="w-full max-[900px]:w-full min-[901px]:w-[48%] bg-white p-6 rounded-2xl shadow-md"
-              >
+              <div class="bg-white p-6 rounded-2xl shadow-md">
                 <h2 class="text-lg font-semibold text-gray-700 mb-4">
                   Recent Announcements
                 </h2>
 
-                <ul class="space-y-3 text-gray-700 max-h-64 overflow-y-auto">
-                  <li class="flex items-start gap-2">
-                    <span>📢</span>
-                    <span>Faculty meeting scheduled for Friday.</span>
-                  </li>
-
-                  <li class="flex items-start gap-2">
-                    <span>📢</span>
-                    <span>Submit internal marks before 25 March.</span>
-                  </li>
-
-                  <li class="flex items-start gap-2">
-                    <span>📢</span>
-                    <span>Workshop on AI next week.</span>
-                  </li>
-                </ul>
+                <ul
+                  id="annList"
+                  class="space-y-3 text-gray-700 max-h-96 overflow-y-auto"
+                ></ul>
+                <p id="annEmpty" class="text-sm text-gray-500 hidden">
+                  No announcements yet.
+                </p>
               </div>
             </div>
           </div>
@@ -126,10 +122,11 @@
       feather.replace();
     </script>
 
-    <script src="../js/layout.js"></script>
     <script src="../js/common.js"></script>
+    <script src="../js/layout.js"></script>
+    <script src="../js/today_admin.js"></script>
 
-    <!-- ✅ OVERLAY -->
+    <!-- OVERLAY -->
     <div
       id="overlay"
       style="
