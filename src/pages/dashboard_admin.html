@@ -31,11 +31,261 @@
         <div class="main-body-content flex-1 min-w-0 bg-[#fefae0] p-4">
           <div class="flex flex-col gap-6">
             <!-- DASHBOARD CONTENT: we build this one block at a time -->
-            <div class="bg-white p-6 shadow rounded">
-              <h2 class="text-lg font-semibold text-gray-700 tracking-wide">
-                DASHBOARD
-              </h2>
-              <p class="text-sm text-gray-500 mt-2">Content coming soon.</p>
+            <div class="space-y-4">
+              <div class="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
+                <div class="bg-white rounded-xl shadow p-4">
+                  <p class="text-xs font-semibold tracking-wide text-gray-500">
+                    STUDENTS
+                  </p>
+                  <p
+                    id="tStudents"
+                    class="text-3xl font-bold text-[#283618] mt-2"
+                  >
+                    --
+                  </p>
+                </div>
+                <div class="bg-white rounded-xl shadow p-4">
+                  <p class="text-xs font-semibold tracking-wide text-gray-500">
+                    FACULTY
+                  </p>
+                  <p
+                    id="tFaculty"
+                    class="text-3xl font-bold text-[#283618] mt-2"
+                  >
+                    --
+                  </p>
+                </div>
+                <div class="bg-white rounded-xl shadow p-4">
+                  <p class="text-xs font-semibold tracking-wide text-gray-500">
+                    SUBJECTS
+                  </p>
+                  <p
+                    id="tSubjects"
+                    class="text-3xl font-bold text-[#283618] mt-2"
+                  >
+                    --
+                  </p>
+                </div>
+                <div class="bg-white rounded-xl shadow p-4">
+                  <p class="text-xs font-semibold tracking-wide text-gray-500">
+                    SESSIONS TODAY
+                  </p>
+                  <p
+                    id="tSessions"
+                    class="text-3xl font-bold text-[#283618] mt-2"
+                  >
+                    --
+                  </p>
+                </div>
+                <div class="bg-white rounded-xl shadow p-4">
+                  <p class="text-xs font-semibold tracking-wide text-gray-500">
+                    OVERALL ATTENDANCE
+                  </p>
+                  <p
+                    id="tOverall"
+                    class="text-3xl font-bold text-[#283618] mt-2"
+                  >
+                    --%
+                  </p>
+                </div>
+                <div class="bg-white rounded-xl shadow p-4">
+                  <p class="text-xs font-semibold tracking-wide text-gray-500">
+                    BELOW THRESHOLD
+                  </p>
+                  <p id="tLow" class="text-3xl font-bold text-[#bc4749] mt-2">
+                    --
+                  </p>
+                  <p id="tLowSub" class="text-xs text-gray-500 mt-1"></p>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 xl:grid-cols-2 gap-4">
+                <!-- STUDENT ANALYTICS -->
+                <section class="bg-white rounded-xl shadow p-4 space-y-4">
+                  <p class="text-sm font-bold tracking-wide text-[#283618]">
+                    STUDENT ANALYTICS
+                  </p>
+
+                  <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    <select
+                      id="stuDept"
+                      class="border border-gray-300 rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#606c38]"
+                    >
+                      <option value="all">All departments</option>
+                    </select>
+                    <select
+                      id="stuSem"
+                      class="border border-gray-300 rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#606c38]"
+                    >
+                      <option value="all">All semesters</option>
+                    </select>
+                  </div>
+
+                  <div class="grid grid-cols-3 gap-2">
+                    <div class="bg-[#fefae0] rounded-lg p-3">
+                      <p
+                        class="text-[11px] font-semibold tracking-wide text-gray-500"
+                      >
+                        STUDENTS
+                      </p>
+                      <p
+                        id="stuCount"
+                        class="text-2xl font-bold text-[#283618] mt-1"
+                      >
+                        --
+                      </p>
+                    </div>
+                    <div class="bg-[#fefae0] rounded-lg p-3">
+                      <p
+                        class="text-[11px] font-semibold tracking-wide text-gray-500"
+                      >
+                        AVERAGE
+                      </p>
+                      <p
+                        id="stuAvg"
+                        class="text-2xl font-bold text-[#283618] mt-1"
+                      >
+                        --
+                      </p>
+                    </div>
+                    <div class="bg-[#fefae0] rounded-lg p-3">
+                      <p
+                        class="text-[11px] font-semibold tracking-wide text-gray-500"
+                      >
+                        BELOW
+                      </p>
+                      <p
+                        id="stuLow"
+                        class="text-2xl font-bold text-[#bc4749] mt-1"
+                      >
+                        --
+                      </p>
+                      <p id="stuLowSub" class="text-[11px] text-gray-500"></p>
+                    </div>
+                  </div>
+
+                  <div>
+                    <p
+                      class="text-xs font-semibold tracking-wide text-gray-500 mb-2"
+                    >
+                      STUDENTS BY ATTENDANCE RANGE
+                    </p>
+                    <div class="relative h-56 w-full">
+                      <canvas id="stuChart"></canvas>
+                    </div>
+                  </div>
+
+                  <div class="overflow-auto max-h-80">
+                    <table class="w-full text-sm min-w-[380px]">
+                      <thead class="sticky top-0 bg-white">
+                        <tr class="text-left text-gray-500 border-b">
+                          <th class="py-2 pr-2">Student</th>
+                          <th class="py-2 pr-2">Sem</th>
+                          <th class="py-2 pr-2">Attended</th>
+                          <th class="py-2 pr-2">%</th>
+                          <th class="py-2">Status</th>
+                        </tr>
+                      </thead>
+                      <tbody id="stuRows"></tbody>
+                    </table>
+                  </div>
+                  <p id="stuEmpty" class="text-sm text-gray-500 hidden">
+                    No students match these filters.
+                  </p>
+                </section>
+
+                <!-- FACULTY ANALYTICS -->
+                <section class="bg-white rounded-xl shadow p-4 space-y-4">
+                  <p class="text-sm font-bold tracking-wide text-[#283618]">
+                    FACULTY ANALYTICS
+                  </p>
+
+                  <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    <select
+                      id="facDept"
+                      class="border border-gray-300 rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#606c38]"
+                    >
+                      <option value="all">All departments</option>
+                    </select>
+                    <select
+                      id="facSem"
+                      class="border border-gray-300 rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#606c38]"
+                    >
+                      <option value="all">All semesters</option>
+                    </select>
+                  </div>
+
+                  <div class="grid grid-cols-3 gap-2">
+                    <div class="bg-[#fefae0] rounded-lg p-3">
+                      <p
+                        class="text-[11px] font-semibold tracking-wide text-gray-500"
+                      >
+                        FACULTY
+                      </p>
+                      <p
+                        id="facCount"
+                        class="text-2xl font-bold text-[#283618] mt-1"
+                      >
+                        --
+                      </p>
+                    </div>
+                    <div class="bg-[#fefae0] rounded-lg p-3">
+                      <p
+                        class="text-[11px] font-semibold tracking-wide text-gray-500"
+                      >
+                        AVERAGE
+                      </p>
+                      <p
+                        id="facAvg"
+                        class="text-2xl font-bold text-[#283618] mt-1"
+                      >
+                        --
+                      </p>
+                    </div>
+                    <div class="bg-[#fefae0] rounded-lg p-3">
+                      <p
+                        class="text-[11px] font-semibold tracking-wide text-gray-500"
+                      >
+                        LOW STUDENTS
+                      </p>
+                      <p
+                        id="facLow"
+                        class="text-2xl font-bold text-[#bc4749] mt-1"
+                      >
+                        --
+                      </p>
+                    </div>
+                  </div>
+
+                  <div>
+                    <p
+                      class="text-xs font-semibold tracking-wide text-gray-500 mb-2"
+                    >
+                      AVERAGE ATTENDANCE BY FACULTY
+                    </p>
+                    <div class="relative h-56 w-full">
+                      <canvas id="facChart"></canvas>
+                    </div>
+                  </div>
+
+                  <div class="overflow-auto max-h-80">
+                    <table class="w-full text-sm min-w-[380px]">
+                      <thead class="sticky top-0 bg-white">
+                        <tr class="text-left text-gray-500 border-b">
+                          <th class="py-2 pr-2">Faculty</th>
+                          <th class="py-2 pr-2">Subjects</th>
+                          <th class="py-2 pr-2">Avg %</th>
+                          <th class="py-2">Low</th>
+                        </tr>
+                      </thead>
+                      <tbody id="facRows"></tbody>
+                    </table>
+                  </div>
+                  <p id="facEmpty" class="text-sm text-gray-500 hidden">
+                    No faculty match these filters.
+                  </p>
+                </section>
+              </div>
             </div>
           </div>
         </div>
@@ -47,6 +297,8 @@
     </script>
     <script src="../js/common.js"></script>
     <script src="../js/layout.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script src="../js/dashboard_admin.js"></script>
     <!-- page script goes here when we add content, e.g.
     <script src="../js/dashboard_student.js"></script> -->
 
