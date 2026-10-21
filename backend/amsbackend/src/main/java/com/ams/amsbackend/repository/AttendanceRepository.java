@@ -62,5 +62,20 @@ ORDER BY s.name
     GROUP BY a.student.id, a.student.userId, a.student.fullName
     """)
     List<StudentSubjectProjection> getStudentStatsForSubject(@Param("subjectId") Long subjectId);
+
+    @Query("""
+    SELECT a.student.id AS studentId,
+           a.student.userId AS userId,
+           a.student.fullName AS studentName,
+           a.student.currentSemester AS semester,
+           SUM(CASE WHEN a.status = 'PRESENT' THEN 1 ELSE 0 END) AS presentCount,
+           COUNT(a.id) AS totalCount
+    FROM Attendance a
+    GROUP BY a.student.id, a.student.userId, a.student.fullName, a.student.currentSemester
+    """)
+    List<StudentOverallProjection> getOverallStudentStats();
+
+    @Query("SELECT COUNT(DISTINCT a.sessionId) FROM Attendance a WHERE a.date = :date")
+    long countSessionsOnDate(@Param("date") LocalDate date);
 }
 
