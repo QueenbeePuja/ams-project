@@ -24,11 +24,22 @@ function isClassActive(timeSlot) {
   return now <= end;
 }
 
+let studentSemester = null;
+
+async function getStudentSemester() {
+  if (studentSemester) return studentSemester;
+  const res = await apiFetch("/api/student/profile");
+  if (!res.ok) throw new Error("Could not load student profile");
+  const profile = await res.json();
+  studentSemester = profile.semester;
+  return studentSemester;
+}
+
 //todays timetable part:
 async function loadTodayClasses() {
   try {
     console.log("loadTodayClasses called");
-    const semester = 4;
+    const semester = await getStudentSemester();
     const res = await apiFetch(`/timetable/semester/${semester}`);
     const data = await res.json();
 
