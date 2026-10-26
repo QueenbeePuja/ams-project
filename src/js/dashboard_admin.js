@@ -222,8 +222,53 @@ async function loadStudents() {
       semester: document.getElementById("stuSem").value,
     });
     renderStudents(d);
+    loadRisk();
   } catch (err) {
     console.error("Student analytics failed", err);
+  }
+}
+
+async function loadRisk() {
+  try {
+    const d = await getJson("/api/admin/analytics/risk", {
+      department: document.getElementById("stuDept").value,
+      semester: document.getElementById("stuSem").value,
+    });
+
+    setText("riskCounts", `${d.high} high · ${d.medium} medium · ${d.low} low`);
+
+    const tbody = document.getElementById("riskRows");
+    tbody.innerHTML = "";
+    document
+      .getElementById("riskEmpty")
+      .classList.toggle("hidden", d.students.length > 0);
+
+    d.students.forEach((r) => {
+      const tr = document.createElement("tr");
+      tr.className = "border-b last:border-0 align-top";
+
+      const badgeTd = document.createElement("td");
+      badgeTd.className = "py-2 pr-2";
+      const high = r.risk === "HIGH";
+      badgeTd.appendChild(
+        pill(
+          high ? "High" : "Medium",
+          high ? "bg-red-100 text-red-800" : "bg-yellow-100 text-yellow-800",
+        ),
+      );
+
+      tr.append(
+        cell(`${r.name || r.userId} (${r.userId})`, "py-2 pr-2"),
+        cell(r.semester, "py-2 pr-2"),
+        badgeTd,
+        cell(r.score, "py-2 pr-2 font-semibold"),
+        cell(r.projectedPercent + "%", "py-2 pr-2"),
+        cell(r.reason, "py-2 text-xs text-gray-600"),
+      );
+      tbody.appendChild(tr);
+    });
+  } catch (err) {
+    console.error("Risk list failed", err);
   }
 }
 

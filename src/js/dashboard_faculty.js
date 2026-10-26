@@ -232,3 +232,54 @@ async function loadFacultyDashboard() {
 }
 
 loadFacultyDashboard();
+function riskCell(text, cls) {
+  const td = document.createElement("td");
+  td.className = cls;
+  td.textContent = text;
+  return td;
+}
+
+async function loadRisk() {
+  try {
+    const res = await apiFetch("/api/faculty/analytics/risk");
+    if (!res.ok) throw new Error("status " + res.status);
+    const d = await res.json();
+
+    document.getElementById("riskCounts").textContent =
+      `${d.high} high · ${d.medium} medium · ${d.low} low`;
+
+    const tbody = document.getElementById("riskRows");
+    tbody.innerHTML = "";
+    document
+      .getElementById("riskEmpty")
+      .classList.toggle("hidden", d.students.length > 0);
+
+    d.students.forEach((r) => {
+      const tr = document.createElement("tr");
+      tr.className = "border-b last:border-0 align-top";
+
+      const badgeTd = document.createElement("td");
+      badgeTd.className = "py-2 pr-2";
+      const pill = document.createElement("span");
+      const high = r.risk === "HIGH";
+      pill.className =
+        "px-2 py-0.5 rounded-full text-xs font-semibold " +
+        (high ? "bg-red-100 text-red-800" : "bg-yellow-100 text-yellow-800");
+      pill.textContent = high ? "High" : "Medium";
+      badgeTd.appendChild(pill);
+
+      tr.append(
+        riskCell(`${r.name || r.userId} (${r.userId})`, "py-2 pr-2"),
+        badgeTd,
+        riskCell(r.score, "py-2 pr-2 font-semibold"),
+        riskCell(r.projectedPercent + "%", "py-2 pr-2"),
+        riskCell(r.reason, "py-2 text-xs text-gray-600"),
+      );
+      tbody.appendChild(tr);
+    });
+  } catch (err) {
+    console.error("Risk list failed", err);
+  }
+}
+
+loadRisk();

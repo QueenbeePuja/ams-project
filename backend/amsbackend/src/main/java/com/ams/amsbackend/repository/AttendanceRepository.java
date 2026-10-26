@@ -77,5 +77,7 @@ ORDER BY s.name
 
     @Query("SELECT COUNT(DISTINCT a.sessionId) FROM Attendance a WHERE a.date = :date")
     long countSessionsOnDate(@Param("date") LocalDate date);
+
+    List<Attendance> findByStudentIdOrderByDateAsc(Long studentId);
 }
 

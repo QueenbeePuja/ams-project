@@ -32,6 +32,70 @@
           <div class="flex flex-col gap-6">
             <!-- DASHBOARD CONTENT: we build this one block at a time -->
             <div class="space-y-4">
+              <div
+                id="riskCard"
+                class="bg-white rounded-xl shadow p-4 border-l-4 border-gray-300"
+              >
+                <div class="flex items-start justify-between gap-3">
+                  <div>
+                    <p
+                      class="text-xs font-semibold tracking-wide text-gray-500"
+                    >
+                      AI EARLY WARNING
+                    </p>
+                    <p
+                      id="riskTitle"
+                      class="text-lg font-bold text-[#283618] mt-1"
+                    >
+                      Checking...
+                    </p>
+                  </div>
+                  <span
+                    id="riskBadge"
+                    class="px-3 py-1 rounded-full text-xs font-semibold bg-gray-200 text-gray-600"
+                    >--</span
+                  >
+                </div>
+                <p id="riskReason" class="text-sm text-gray-700 mt-2"></p>
+                <div
+                  id="riskStats"
+                  class="grid grid-cols-3 gap-2 mt-3 text-center hidden"
+                >
+                  <div class="bg-[#fefae0] rounded-lg p-2">
+                    <p
+                      class="text-[11px] font-semibold tracking-wide text-gray-500"
+                    >
+                      PROJECTED
+                    </p>
+                    <p
+                      id="riskProjected"
+                      class="text-lg font-bold text-[#283618]"
+                    >
+                      --
+                    </p>
+                  </div>
+                  <div class="bg-[#fefae0] rounded-lg p-2">
+                    <p
+                      class="text-[11px] font-semibold tracking-wide text-gray-500"
+                    >
+                      MUST ATTEND
+                    </p>
+                    <p id="riskMust" class="text-lg font-bold text-[#283618]">
+                      --
+                    </p>
+                  </div>
+                  <div class="bg-[#fefae0] rounded-lg p-2">
+                    <p
+                      class="text-[11px] font-semibold tracking-wide text-gray-500"
+                    >
+                      RISK SCORE
+                    </p>
+                    <p id="riskScore" class="text-lg font-bold text-[#283618]">
+                      --
+                    </p>
+                  </div>
+                </div>
+              </div>
               <!-- Stat tiles -->
               <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
                 <div class="bg-white rounded-xl shadow p-4">

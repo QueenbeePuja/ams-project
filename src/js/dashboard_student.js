@@ -183,3 +183,65 @@ async function loadStudentDashboard() {
 }
 
 loadStudentDashboard();
+const RISK_LOOK = {
+  HIGH: {
+    title: "High risk of falling short",
+    badge: "bg-red-100 text-red-800",
+    border: "border-red-500",
+    label: "High risk",
+  },
+  MEDIUM: {
+    title: "Needs attention",
+    badge: "bg-yellow-100 text-yellow-800",
+    border: "border-yellow-500",
+    label: "Medium risk",
+  },
+  LOW: {
+    title: "You are on track",
+    badge: "bg-green-100 text-green-800",
+    border: "border-green-600",
+    label: "Low risk",
+  },
+  INSUFFICIENT_DATA: {
+    title: "Not enough data yet",
+    badge: "bg-gray-200 text-gray-600",
+    border: "border-gray-300",
+    label: "No data",
+  },
+};
+
+async function loadRisk() {
+  try {
+    const res = await apiFetch("/api/student/analytics/risk");
+    if (!res.ok) throw new Error("status " + res.status);
+    const r = await res.json();
+    const look = RISK_LOOK[r.risk] || RISK_LOOK.INSUFFICIENT_DATA;
+
+    document.getElementById("riskCard").className =
+      "bg-white rounded-xl shadow p-4 border-l-4 " + look.border;
+    document.getElementById("riskTitle").textContent = look.title;
+    const badge = document.getElementById("riskBadge");
+    badge.textContent = look.label;
+    badge.className =
+      "px-3 py-1 rounded-full text-xs font-semibold " + look.badge;
+    document.getElementById("riskReason").textContent = r.reason;
+
+    const stats = document.getElementById("riskStats");
+    if (r.risk === "INSUFFICIENT_DATA") {
+      stats.classList.add("hidden");
+    } else {
+      stats.classList.remove("hidden");
+      document.getElementById("riskProjected").textContent =
+        r.projectedPercent + "%";
+      document.getElementById("riskMust").textContent =
+        `${r.mustAttend} / ${r.remainingClasses}`;
+      document.getElementById("riskScore").textContent = r.score;
+    }
+  } catch (err) {
+    console.error("Risk load failed", err);
+    document.getElementById("riskTitle").textContent =
+      "Early warning unavailable";
+  }
+}
+
+loadRisk();

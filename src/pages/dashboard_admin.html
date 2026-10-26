@@ -98,7 +98,36 @@
                   <p id="tLowSub" class="text-xs text-gray-500 mt-1"></p>
                 </div>
               </div>
-
+              <div class="bg-white rounded-xl shadow p-4">
+                <div class="flex items-center justify-between gap-2 mb-3">
+                  <p class="text-xs font-semibold tracking-wide text-gray-500">
+                    AI EARLY WARNING: AT-RISK STUDENTS (FOLLOWS STUDENT FILTERS
+                    BELOW)
+                  </p>
+                  <p
+                    id="riskCounts"
+                    class="text-xs text-gray-500 whitespace-nowrap"
+                  ></p>
+                </div>
+                <div class="overflow-auto max-h-80">
+                  <table class="w-full text-sm min-w-[560px]">
+                    <thead class="sticky top-0 bg-white">
+                      <tr class="text-left text-gray-500 border-b">
+                        <th class="py-2 pr-2">Student</th>
+                        <th class="py-2 pr-2">Sem</th>
+                        <th class="py-2 pr-2">Risk</th>
+                        <th class="py-2 pr-2">Score</th>
+                        <th class="py-2 pr-2">Projected</th>
+                        <th class="py-2">Why</th>
+                      </tr>
+                    </thead>
+                    <tbody id="riskRows"></tbody>
+                  </table>
+                </div>
+                <p id="riskEmpty" class="text-sm text-gray-500 hidden">
+                  No students are currently flagged.
+                </p>
+              </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 gap-4">
                 <!-- STUDENT ANALYTICS -->
                 <section class="bg-white rounded-xl shadow p-4 space-y-4">
