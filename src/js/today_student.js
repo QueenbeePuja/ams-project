@@ -139,17 +139,11 @@ async function loadTodayClasses() {
 }
 //percentage of attendance
 async function loadAttendancePercentage() {
-  const studentId = localStorage.getItem("studentId");
-  const token = localStorage.getItem("token");
-
-  const res = await apiFetch(
-    `/api/attendance/percentage?studentId=${studentId}`,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    },
-  );
+  const res = await apiFetch("/api/attendance/percentage");
+  if (!res.ok) {
+    console.error("Could not load attendance percentage", res.status);
+    return;
+  }
 
   const data = await res.json();
 

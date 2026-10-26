@@ -58,6 +58,8 @@ public class SecurityConfig {
                         .requestMatchers("/subjects/**", "/faculty/**").authenticated()
                         .requestMatchers("/api/attendance/start-session").hasRole("FACULTY")
                         .requestMatchers("/api/attendance/scan").hasRole("STUDENT")
+                        .requestMatchers("/api/attendance/mark", "/api/attendance/start-session",
+                                "/api/attendance/end-session", "/api/attendance/count").hasRole("FACULTY")
                         .requestMatchers("/api/attendance/qr-token").hasRole("FACULTY")
                         .requestMatchers("/api/faculty/**").hasRole("FACULTY")
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")

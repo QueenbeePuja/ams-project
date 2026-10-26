@@ -206,11 +206,29 @@ public class AttendanceController {
         );
 
     }
-
     @GetMapping("/percentage")
-    public List<AttendancePercentageDTO> getPercentage(@RequestParam Long studentId){
+    public ResponseEntity<?> getPercentage(@RequestParam(required = false) Long studentId,
+                                           Authentication authentication) {
+        boolean staff = authentication.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_FACULTY")
+                        || a.getAuthority().equals("ROLE_ADMIN"));
 
-        return attendanceService.getPercentage(studentId);
+        Long targetId;
+        if (staff) {
+            if (studentId == null) {
+                return ResponseEntity.badRequest().body("studentId is required");
+            }
+            targetId = studentId;
+        } else {
+            // a student only ever sees their own data, whatever id the browser sends
+            Student me = studentRepository.findByUserId(authentication.getName()).orElse(null);
+            if (me == null) {
+                return ResponseEntity.status(403).body("Student profile not found");
+            }
+            targetId = me.getId();
+        }
+
+        return ResponseEntity.ok(attendanceService.getPercentage(targetId));
     }
 
 }
