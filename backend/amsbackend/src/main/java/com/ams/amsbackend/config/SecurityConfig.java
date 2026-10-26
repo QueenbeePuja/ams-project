@@ -55,8 +55,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/faculty/**").hasRole("FACULTY")
                         .requestMatchers("/api/student/**").hasAnyRole("STUDENT","FACULTY")
 
-                        .requestMatchers("/subjects/**").permitAll()
-                        .requestMatchers("/faculty/**").permitAll()
+                        .requestMatchers("/subjects/**", "/faculty/**").authenticated()
                         .requestMatchers("/api/attendance/start-session").hasRole("FACULTY")
                         .requestMatchers("/api/attendance/scan").hasRole("STUDENT")
                         .requestMatchers("/api/attendance/qr-token").hasRole("FACULTY")
