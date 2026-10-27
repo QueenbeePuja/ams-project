@@ -4,7 +4,7 @@ document.addEventListener("click", (e) => {
   }
 });
 let attendanceMap = {};
-let lastRenderedClasses = "";
+let lastRenderedClasses = null;
 
 function isClassActive(timeSlot) {
   const now = new Date();
