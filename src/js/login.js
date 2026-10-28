@@ -37,7 +37,9 @@ form.addEventListener("submit", async function (event) {
       return;
     }
   }
+  const keepApi = localStorage.getItem("apiBase");
   localStorage.clear();
+  if (keepApi) localStorage.setItem("apiBase", keepApi);
 
   // 🔥 NEW PART (API CALL)
   const data = {
@@ -53,8 +55,6 @@ form.addEventListener("submit", async function (event) {
     });
 
     const result = await response.json();
-    console.log("Server Response:", result);
-    //alert("DEBUG: " + result);
 
     // this where "what happenes after login"
     if (response.ok && result.token) {
