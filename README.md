@@ -92,7 +92,7 @@ docs/screenshots/     Screenshots used in this README
 
 | Role    | ID         | Password          |
 | ------- | ---------- | ----------------- |
-| Student | `24223070` | `<DEMO PASSWORD>` |
+| Student | `24223070` | `<1234>` |
 | Faculty | `FA24CA01` | `<DEMO PASSWORD>` |
 
 ## Roadmap
