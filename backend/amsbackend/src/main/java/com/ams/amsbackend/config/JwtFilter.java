@@ -40,7 +40,7 @@ public class JwtFilter extends OncePerRequestFilter {
                  if(role!= null) {
                      List<SimpleGrantedAuthority> authorities =
                              List.of(new SimpleGrantedAuthority("ROLE_" + role.toUpperCase()));
-                     
+
                      UsernamePasswordAuthenticationToken auth =
                              new UsernamePasswordAuthenticationToken(
                                      userId, null, authorities
