@@ -90,10 +90,10 @@ docs/screenshots/     Screenshots used in this README
 
 ## Demo logins
 
-| Role    | ID         | Password          |
-| ------- | ---------- | ----------------- |
-| Student | `24223070` | `<1234>` |
-| Faculty | `FA24CA01` | `<DEMO PASSWORD>` |
+| Role    | ID                      | Password                 |
+| ------- | ----------------------- | ------------------------ |
+| Student |        `24223070`       |         `<1234>`         |
+| Faculty | `available on request`  | `<available on request>` |
 
 ## Roadmap
 
