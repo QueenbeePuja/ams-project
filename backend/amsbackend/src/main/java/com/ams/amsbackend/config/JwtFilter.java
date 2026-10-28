@@ -31,7 +31,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
         String authHeader = request.getHeader("Authorization");
         if(authHeader != null && authHeader.startsWith("Bearer ")){
-            System.out.println("AUTH HEADER: " + authHeader);
+
             String token = authHeader.substring(7);
             try{
                 String userId = jwtUtil.extractUserId(token);
@@ -40,7 +40,7 @@ public class JwtFilter extends OncePerRequestFilter {
                  if(role!= null) {
                      List<SimpleGrantedAuthority> authorities =
                              List.of(new SimpleGrantedAuthority("ROLE_" + role.toUpperCase()));
-                     System.out.println("ROLE FROM TOKEN: " + role);
+                     
                      UsernamePasswordAuthenticationToken auth =
                              new UsernamePasswordAuthenticationToken(
                                      userId, null, authorities
@@ -52,7 +52,7 @@ public class JwtFilter extends OncePerRequestFilter {
                      );
                      org.springframework.security.core.context.SecurityContextHolder.getContext()
                              .setAuthentication(auth);
-                     System.out.println("AUTH SET SUCCESSFULLY");
+
                  }
             }catch (Exception e){
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
