@@ -117,8 +117,6 @@ function loadSidebarMenu() {
       <div class="p-2 hover:bg-[#606c38] rounded cursor-pointer border-2 border-[#606c38] text-center transition">
         <a href="../pages/dashboard_student.html">Dashboard</a>
       </div>
-      <div class="p-2 hover:bg-[#606c38] rounded cursor-pointer border-2 border-[#606c38] text-center transition">
-      Attendance</div>
     `;
   } else if (role === "FACULTY") {
     menu.innerHTML = `

@@ -11,41 +11,35 @@
 
   <body class="m-0 bg-[#fefae0]">
     <div class="flex flex-col min-h-screen">
-      <!-- ✅ NAVBAR -->
       <div id="navbar"></div>
 
-      <!-- ✅ SIDEBAR + CONTENT -->
       <div class="flex flex-1 relative">
-        <!-- SIDEBAR -->
         <div id="sidebar"></div>
 
-        <!-- MAIN CONTENT -->
         <div class="main-body-content flex-1 bg-[#fefae0] p-4 overflow-y-auto">
           <div class="flex flex-col gap-6 max-w-4xl mx-auto">
-            <!-- ATTENDANCE SETUP -->
+            <!-- SETUP -->
             <div class="bg-white p-6 rounded-2xl shadow-md">
               <h2 class="text-lg font-semibold text-gray-700 mb-4">
                 Start Attendance
               </h2>
 
-              <!-- ✅ RESPONSIVE GRID -->
               <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <!-- COURSE -->
-                <select class="border rounded-lg p-2">
-                  <option>Select Course</option>
-                  <option>CS501 - Data Mining</option>
-                  <option>CS502 - Operating Systems</option>
+                <select id="subjectSelect" class="border rounded-lg p-2">
+                  <option>Loading your subjects...</option>
                 </select>
-
-                <!-- SEMESTER -->
-                <select class="border rounded-lg p-2">
-                  <option>Select Semester</option>
-                  <option>MCA Sem 1</option>
-                  <option>MCA Sem 2</option>
-                </select>
-
-                <!-- DATE -->
-                <input type="date" class="border rounded-lg p-2" />
+                <div
+                  id="semesterText"
+                  class="border rounded-lg p-2 bg-gray-50 text-gray-700"
+                >
+                  -
+                </div>
+                <input
+                  id="sessionDate"
+                  type="date"
+                  class="border rounded-lg p-2 bg-gray-50"
+                  disabled
+                />
               </div>
 
               <button
@@ -56,10 +50,7 @@
               </button>
             </div>
 
-            <!-- STUDENT LIST -->
-            <div id="studentList" class="space-y-2"></div>
-
-            <!-- ATTENDANCE SESSION PANEL -->
+            <!-- SESSION: QR FIRST -->
             <div
               id="attendanceSession"
               class="hidden bg-white p-6 rounded-2xl shadow-md text-center"
@@ -68,14 +59,11 @@
                 Attendance Session Active
               </h2>
 
-              <!-- PRESENT COUNT -->
               <div class="text-sm text-gray-500 mb-2">Students Present</div>
-
               <div class="text-3xl font-bold mb-6">
                 <h2 id="presentCount">0 / 0</h2>
               </div>
 
-              <!-- QR -->
               <div class="flex justify-center mb-6">
                 <div
                   id="qrBox"
@@ -83,11 +71,31 @@
                 ></div>
               </div>
 
-              <!-- TIMER -->
               <div class="text-gray-600 mb-4">
                 Time Remaining:
-                <span id="timer" class="font-semibold">20</span>s
+                <span id="timer" class="font-semibold">120</span>s
               </div>
+
+              <button
+                id="endAttendance"
+                class="bg-red-700 text-white px-4 py-2 rounded-lg hover:bg-red-800"
+              >
+                End session now
+              </button>
+            </div>
+
+            <!-- YET TO CHECK IN (below the QR, shrinks as students scan) -->
+            <div
+              id="pendingCard"
+              class="hidden bg-white p-6 rounded-2xl shadow-md"
+            >
+              <h2
+                id="pendingTitle"
+                class="text-lg font-semibold text-gray-700 mb-3"
+              >
+                Yet to check in
+              </h2>
+              <div id="pendingList" class="max-h-96 overflow-y-auto"></div>
             </div>
           </div>
         </div>
@@ -102,7 +110,6 @@
     <script src="../js/attendance_faculty.js"></script>
     <script src="../js/common.js"></script>
 
-    <!-- ✅ OVERLAY -->
     <div
       id="overlay"
       style="

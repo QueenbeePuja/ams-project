@@ -71,6 +71,29 @@ public class FacultyAnalyticsService {
         return Optional.of(new FacultySummary(faculty.getFullName(), threshold, totalLow, result));
     }
 
+    public List<Map<String, Object>> getTeachingSubjects(String userId) {
+        Faculty faculty = facultyRepository.findByUserId(userId).orElse(null);
+        if (faculty == null) return List.of();
+
+        Map<Long, Subject> subjects = new LinkedHashMap<>();
+        for (Timetable t : timetableRepository.findByFacultyId(faculty.getId())) {
+            if (t.getSubject() != null) {
+                subjects.putIfAbsent(t.getSubject().getId(), t.getSubject());
+            }
+        }
+
+        List<Map<String, Object>> out = new ArrayList<>();
+        for (Subject s : subjects.values()) {
+            Map<String, Object> m = new LinkedHashMap<>();
+            m.put("id", s.getId());
+            m.put("code", s.getCode());
+            m.put("name", s.getName());
+            m.put("semester", s.getSemester());
+            out.add(m);
+        }
+        return out;
+    }
+
     private double round1(double v) {
         return Math.round(v * 10.0) / 10.0;
     }

@@ -206,6 +206,15 @@ public class AttendanceController {
         );
 
     }
+    @GetMapping("/present")
+    public ResponseEntity<?> getPresentStudents(@RequestParam String sessionId) {
+        List<Long> ids = attendanceRepository
+                .findBySessionIdAndStatus(sessionId, Attendance.AttendanceStatus.PRESENT)
+                .stream()
+                .map(a -> a.getStudent().getId())
+                .toList();
+        return ResponseEntity.ok(ids);
+    }
     @GetMapping("/percentage")
     public ResponseEntity<?> getPercentage(@RequestParam(required = false) Long studentId,
                                            Authentication authentication) {

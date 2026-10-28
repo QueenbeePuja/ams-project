@@ -79,5 +79,6 @@ ORDER BY s.name
     long countSessionsOnDate(@Param("date") LocalDate date);
 
     List<Attendance> findByStudentIdOrderByDateAsc(Long studentId);
+    List<Attendance> findBySessionIdAndStatus(String sessionId, Attendance.AttendanceStatus status);
 }
 
